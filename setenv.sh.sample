@@ -1,0 +1,6 @@
+# Path to build tree in case of out of source build. Can be same as ROOT_DIR.
+export Binutils_BUILD_DIR=
+# Path to sources of Binutils
+export Binutils_ROOT_DIR=
+export Boost_ROOT_DIR=
+export CommonCpp_ROOT_DIR=
