@@ -67,100 +67,14 @@ class Analyser
 public:
    typedef std::vector<fs::path> filelist_t;
 
-   Analyser(int packageLevel) : m_packageLevel(packageLevel)
-   {
-   }
+   Analyser(int packageLevel);
    
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
-   void find_file( const fs::path& dir_path)
-   {
-      if ( !fs::exists( dir_path ) )
-      {
-         std::cout << "doesn't exist " << dir_path.native_directory_string() << std::endl;
-      }
-
-      fs::directory_iterator end_itr;
-      for ( fs::directory_iterator itr( dir_path );
-      itr != end_itr;
-      ++itr )
-      {
-         if ( fs::is_directory( *itr ) )
-         {
-            find_file(*itr);
-         }
-         else
-         {
-            if (itr->leaf().rfind(".o") != std::string::npos)
-            {
-               list.push_back(*itr);
-            }
-         }
-      }
-   }
-
-   void ReadObjects()
-   {
-      std::cout << "package level << " << m_packageLevel << std::endl;
-       // temporary
-      for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
-      {
-         //todo define m_PackageSet as collection of object files
-         //using config setting
-         fs::path::iterator p = pos->end();
-         --p; //file
-         std::string name = *p;
-         --p; //directory containing file -> Release or Debug using msvc
-         if(m_packageLevel == 2)
-         {
-           --p;
-         }
-         std::string packagename = *p;
-         
-         cout << pos->string() << endl;
-         ObjectFile* o = new ObjectFile(m_ObjectGraph, name, m_symbols);
-
-         std::pair<std::set<ObjectPackage>::iterator,bool> status =
-              m_PackageSet.insert(ObjectPackage(m_PackageGraph, packagename));
-
-         ObjectPackage* op = const_cast<ObjectPackage*>(&(*(status.first)));
-         o->Read(*pos);
-         o->SetParent(*op);
-         m_ObjectFiles.push_back(o);
-      }
-      
-      for(std::set<ObjectPackage>::iterator i = m_PackageSet.begin(); i != m_PackageSet.end(); ++i)
-      {
-        m_Packages.push_back(const_cast<ObjectPackage*>(&(*i)));
-      }
-   }
-   void Link()
-   {
-      m_ObjectGraph.init(m_ObjectFiles);
-      m_PackageGraph.init(m_Packages);
-      for (std::vector<ObjectFile*>::iterator pos = m_ObjectFiles.begin();
-      pos != m_ObjectFiles.end();
-      ++pos)
-      {
-         std::cout << "linking obj " << (*pos)->Name() << std::endl;
-         (*pos)->Link();
-      }
-      m_symbols.Statistics();
-   }
-   
-   void WriteObjectGraph(std::ostream& out)
-   {
-      wrapper<ObjectFile> w(m_ObjectFiles);
-      boost::default_writer def;
-      sample_graph_writer sample;
-      boost::write_graphviz(out, m_ObjectGraph.get(), boost::make_label_writer(w), def, sample);
-   }
-   
-   void WritePackageGraph(std::ostream& out)
-   {
-      wrapper<ObjectPackage> w2(m_Packages);
-      boost::write_graphviz(out, m_PackageGraph.get(),
-        boost::make_label_writer(w2));
-   }
+   void find_file( const fs::path& dir_path);
+   void ReadObjects();
+   void Link();
+   void WriteObjectGraph(std::ostream& out);
+   void WritePackageGraph(std::ostream& out);
    
 private:
    filelist_t list;

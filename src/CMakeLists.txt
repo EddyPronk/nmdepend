@@ -42,6 +42,7 @@ ADD_LIBRARY(core
   Symbol.cpp
   SymbolStore.cpp
   Graph.cpp
+  Analyser.cpp
 #  SymbolParser.cpp
   )
 
