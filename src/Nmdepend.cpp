@@ -22,6 +22,7 @@
 
 #include "ObjectFile.h"
 #include "ObjectPackage.h"
+#include "SymbolStore.h"
 
 using namespace std;
 using namespace ost;
@@ -97,7 +98,7 @@ public:
          --p; // 1 level higher for visual studio
          std::string packagename = *p;
 
-         ObjectFile* o = new ObjectFile(name,symbolIndex); //memory leak
+         ObjectFile* o = new ObjectFile(name,m_symbols); //memory leak
 
          Package* pack = packages[packagename];
          if (pack == 0)
@@ -119,6 +120,7 @@ public:
       pos != objectList.end();
       ++pos)
       {
+         std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
       }
    }
@@ -225,7 +227,7 @@ public:
 
 private:
    filelist_t list;
-   Symbol::SymbolIndex_t symbolIndex;
+   SymbolStore m_symbols;
    
    //why use vectors of pointers and not vectors of objects?
    //this uses two indirections instead of one;

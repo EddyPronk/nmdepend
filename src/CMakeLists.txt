@@ -33,13 +33,14 @@ INCLUDE_DIRECTORIES(
 )
 
 ADD_LIBRARY(core
-  Entity.h Entity.cpp
-  Package.h Package.cpp
-  ObjectFile.h ObjectFile.cpp
-  ObjectPackage.h ObjectPackage.cpp
-  Archive.h Archive.cpp
-  Symbol.h Symbol.cpp
-  SymbolParser.h SymbolParser.cpp
+  Entity.cpp
+  Package.cpp
+  ObjectFile.cpp
+  ObjectPackage.cpp
+#  Archive.cpp
+  Symbol.cpp
+  SymbolStore.cpp
+  SymbolParser.cpp
   )
 
 SET(Nmdepend_LIBRARIES
@@ -60,15 +61,6 @@ ENDIF (CYGWIN)
 
 ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
 TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
-
-ADD_EXECUTABLE (test1 test/test1.cpp)
-TARGET_LINK_LIBRARIES(test1 core ${Nmdepend_LIBRARIES})
-
-ADD_EXECUTABLE (test2 test/test2.cpp)
-TARGET_LINK_LIBRARIES(test2 core ${Nmdepend_LIBRARIES})
-
-ADD_EXECUTABLE (test4 test/test4.cpp)
-TARGET_LINK_LIBRARIES(test4 core ${Nmdepend_LIBRARIES})
 
 SUBDIRS(test)
 

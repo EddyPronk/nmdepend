@@ -31,12 +31,20 @@
 #undef typename
 
 
-
-Symbol::Symbol(ObjectFile* o, const std::string& name) : m_Owner(o), m_Name(name)
+Symbol::Symbol(ObjectFile* obj, const std::string& name) : m_Owner(obj), m_Name(name)
 {
 }
 
-std::string Symbol::Demangled()
+Symbol::Symbol(const std::string& name) : m_Owner(0), m_Name(name)
+{
+}
+
+const std::string& Symbol::Name() const
+{
+  return m_Name;
+}
+
+std::string Symbol::Demangled() const
 {
    std::string demangled;
 
@@ -68,3 +76,18 @@ std::string Symbol::Demangled()
    return demangled;
 }
 
+bool Symbol::operator < (const Symbol& rhs) const
+{
+  return m_Name < rhs.m_Name;
+}
+
+ bool Symbol::foundOwner() const
+ {
+   return m_Owner != 0;
+ }
+ 
+ void Symbol::setOwner(ObjectFile* obj)
+ {
+   m_Owner = obj;
+ }
+ 

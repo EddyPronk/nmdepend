@@ -67,7 +67,7 @@ void ObjectPackage::Provides(SubPackageList_t& list)
       ; pos != m_Provides.end(); ++pos)
    {
       list.push_back(*pos);
-      std::cerr << Name() << " xyz " << (*pos)->Name() << std::endl;
+      std::cerr << Name() << " ObjectPackage::provides " << (*pos)->Name() << std::endl;
    }
 }
 

@@ -28,20 +28,24 @@
 
 //#include <boost/filesystem/path.hpp>
 //#include <boost/filesystem/fstream.hpp>
+#include "boost/shared_ptr.hpp"
 
 #include "Entity.h"
 #include "Package.h"
 #include "Symbol.h"
+#include "SymbolStore.h"
 
 class bfd;
 class Symbol;
 
 class ObjectFile : public Package
 {
+  //typedef const Symbol* SymbolPtr;
+ 
 public:
-  typedef std::set<Symbol*> SymIndex_t;
+  typedef std::set<SymbolPtr> SymIndex_t;
 
-  ObjectFile(const Package::Name_t& name, Symbol::SymbolIndex_t& symbolIndex);
+  ObjectFile(const Package::Name_t& name, SymbolStore& store);
 
   void Read(const boost::filesystem::path& objectfile);
   void Read(bfd* file);
@@ -51,11 +55,15 @@ public:
   // Link objects like a real linker does.
   void Link();
 
+  //bool Depend(const Symbol& s) const;
+  bool Depend(const ObjectFile& o) const;
+  //bool Depend(const Package& p) const;
+
   // Experimental operation to play with intersection
-  void Boo(ObjectFile& rsh, SymIndex_t& i);
+  void intersection(const ObjectFile& rsh, SymIndex_t& i) const;
 
 private:
-   ObjectFile();
+   //ObjectFile();
 
    // List of imported symbols
    SymIndex_t m_SymImports;
@@ -64,7 +72,7 @@ private:
    SymIndex_t m_SymExports;
 
    // For looking up in which objectfile a symbol is defined.
-   Symbol::SymbolIndex_t& m_SymbolIndex;
+   SymbolStore& m_SymbolStore;
 };
 
 #endif

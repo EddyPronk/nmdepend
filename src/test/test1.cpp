@@ -65,7 +65,7 @@ int main(void)
 
    std::cout << "test intersection" << std::endl;
 
-   b.Boo(a, inter);
+   b.intersection(a, inter);
    for(ObjectFile::SymIndex_t::iterator i = inter.begin(); i != inter.end(); ++i)
    {
       std::cout << (*i)->m_Name << std::endl;

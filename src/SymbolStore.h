@@ -16,41 +16,18 @@
 // along with Nmdepend; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef SYMBOL_H
-#define SYMBOL_H
+#ifndef SymbolStore_H
+#define SymbolStore_H
 
-#include <string>
-#include <set>
-#include <map>
 
-#include "Package.h"
+#include "Symbol.h"
 
-class ObjectFile;
-class Symbol;
-
-typedef Symbol* SymbolPtr;
-
-class Symbol
+class SymbolStore
 {
 public:
-   typedef std::string Name_t;
-   typedef std::map<Name_t, Symbol> SymbolIndex_t;
-
-   Symbol(ObjectFile* o, const std::string& name);
-   Symbol(const std::string& name);
-   const std::string& Name() const;
-   bool operator < (const Symbol& rhs) const;
-   bool foundOwner() const;
-   void setOwner(ObjectFile* o);
-   
-   ObjectFile* m_Owner;
-   std::string Demangled() const;
-
-public:
-   std::string m_Name;
-
-   // Package exporting the symbol
-   //std::set<Package*> m_Referenced;
+  SymbolPtr Add(const std::string& name);
+private:
+  std::set<Symbol> m_Symbols;
 };
 
 #endif

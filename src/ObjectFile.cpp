@@ -25,50 +25,36 @@
 
 #include "bfd.h"
 
-ObjectFile::ObjectFile(const Package::Name_t& name, Symbol::SymbolIndex_t& symbolIndex)
-: Package(name), m_SymbolIndex(symbolIndex)
+ObjectFile::ObjectFile(const Package::Name_t& name, SymbolStore& store)
+: Package(name), m_SymbolStore(store)
 {
 }
 
 void ObjectFile::AddImportSymbol(const std::string& name)
 {
-  Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(name);
-  if (p == m_SymbolIndex.end())
-  {
-    Symbol* s = new Symbol(this, name);
-    std::cout << "AddImportSymbol " << s->Demangled() << std::endl;
-    //m_SymbolIndex[name] = s;
-    m_SymImports.insert(s);
-  }
-  else
-  {
-    m_SymImports.insert(p->second);
-    std::cout << "already exists : " << name << std::endl;
-  }
+  m_SymImports.insert(m_SymbolStore.Add(name));
 }
 
 void ObjectFile::AddExportSymbol(const std::string& name)
 {
-  Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(name);
-  if (p == m_SymbolIndex.end())
+	SymbolPtr p = m_SymbolStore.Add(name);
+  Symbol& sym = *p; 
+  if(!sym.foundOwner())
   {
-    Symbol* s = new Symbol(this, name);
-    std::cout << "AddExportSymbol " << s->Demangled() << std::endl;
-    m_SymbolIndex[name] = s;
-    m_SymExports.insert(s);
+    sym.setOwner(this);
   }
   else
   {
-    m_SymExports.insert(p->second);
-    std::cout << "already exists : " << name << std::endl;
+    // Symbol already defined by ...
   }
+  m_SymExports.insert(p);
 }
 
-void ObjectFile::Boo(ObjectFile& rsh, SymIndex_t& i)
+void ObjectFile::intersection(const ObjectFile& rsh, SymIndex_t& i) const
 {
   i.clear();
-  set_intersection (m_SymExports.begin(), m_SymExports.end(),
-              rsh.m_SymImports.begin(), rsh.m_SymImports.end(),
+  set_intersection (m_SymImports.begin(), m_SymImports.end(),
+              rsh.m_SymExports.begin(), rsh.m_SymExports.end(),
               std::inserter(i, i.begin()));
 }
 
@@ -77,28 +63,32 @@ void ObjectFile::Link()
   for(SymIndex_t::iterator pos = m_SymImports.begin()
     ; pos != m_SymImports.end(); ++pos)
   {
-    std::string& s = (*pos)->m_Name;
-    Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(s);
-    if (p != m_SymbolIndex.end())
+    const SymbolPtr r = *pos;
+    const std::string& s = r->Name();
+    
+    ObjectFile* owner = r->m_Owner;
+    if(owner)
     {
-      ObjectFile* owner = p->second->m_Owner;
       if (owner != this)
       {
-        std::string demangled = (*pos)->Demangled();
+        std::string demangled = r->Demangled();
         if (demangled.find("scalar deleting destructor") == std::string::npos)
         {
           m_Parent->AddRequires(owner);
           AddImport(owner);
           owner->AddExport(this);
           std::cout << "symbol " << s << "::" << demangled << " found in "
-                    << m_SymbolIndex[s]->m_Owner->Name() << std::endl;
+                    << owner->Name() << std::endl;
         }
         else
         {
-          std::cout << "ignored " << Name() << "::" << demangled << " found in "
-                    << m_SymbolIndex[s]->m_Owner->Name() << std::endl;
+          std::cout << "ignored " << s << "::" << demangled << " found in "
+                    << owner->Name() << std::endl;
         }
       }
+    }
+    else
+    {
     }
   }
 }
@@ -131,7 +121,6 @@ void ObjectFile::Read(bfd* file)
    }
 
    long symcount;
-
    void *minisyms;
 
    // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
@@ -181,4 +170,12 @@ void ObjectFile::Read(bfd* file)
      //char *res = cplus_demangle (symname, DMGL_ANSI | DMGL_PARAMS);
      //std::cout << "symname " << sym->flags << " " << symname << std::endl;
    }
+}
+
+bool ObjectFile::Depend(const ObjectFile& o) const
+{
+  SymIndex_t intersect;
+  intersection(o, intersect);
+
+  return !intersect.empty();
 }
