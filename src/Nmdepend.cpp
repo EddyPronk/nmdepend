@@ -38,8 +38,8 @@ CommandOptionArg	option_style(
 	"style", "s", "tree style 'auto' (default), 'vstudio' ", true
 );
 
-CommandOptionArg	option_level(
-	"level", "l", "Package name at level <n>"
+CommandOptionArg  option_level(
+ "level", "l", "Package name at level <n>"
 );
 
 CommandOptionNoArg	helparg(
@@ -71,9 +71,10 @@ int main( int argc, char ** argv )
      	::exit(0);
 	  }
 
+    int level=1;
     if (option_level.hasValue())
     {
-      int level = atoi(option_level.values[0]);
+      level = atoi(option_level.values[0]);
       cerr << "level " << level << endl;
     }
   	
@@ -86,7 +87,7 @@ int main( int argc, char ** argv )
     // No clue what it does.
    args->performTask();
 
-   Analyser app;
+   Analyser app(level);
 
    // print all the other options.
 	 for ( int i = 0; i < restoargs.numValue; i ++ ) {
@@ -96,6 +97,15 @@ int main( int argc, char ** argv )
 
    app.ReadObjects();
    app.Link();
+   
+   std::ofstream objectStream;
+   objectStream.open("object.dot");
+   app.WriteObjectGraph(objectStream);
+
+   std::ofstream packageStream;
+   packageStream.open("package.dot");
+   app.WritePackageGraph(packageStream);
+
 
    delete args;
 
