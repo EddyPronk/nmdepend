@@ -19,35 +19,33 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <set>
 #include <map>
 
+#include "Callback.h"
+#include "Entity.h"
+
 // Package does not implement Provides/Requires containers.
 
-class Package
+class Package : public Entity, public IParent<Package>
 {
 public:
-   typedef std::string Name_t;
    typedef std::set<Package*> Index_t;
    typedef std::vector<Package*> SubPackageList_t;
-   typedef std::map<Name_t, Package*> PackageRegistry_t;
+   typedef std::map<std::string, Package*> PackageRegistry_t;
 
-
-   Package(const Name_t& name);
-
-   void SetParent(Package& parent);
-   //Package& Parent();
-   void Imports();
+   Package(Callback<Package>& callback, const std::string& name);
+//   void SetParent(Package& parent);
    void Imports(SubPackageList_t& list);
-   virtual void Provides(SubPackageList_t& list);
-   Name_t& Name();
+//   virtual void Provides(SubPackageList_t& list);
 
    bool Depend(const Package&) const;
 
    // todo Rename/remove this
-   Name_t Name2();
+   std::string Name2();
 
    // Two types of relationships are being stored.
    // Import/Export represent dependencies between packages on same level.
@@ -59,20 +57,16 @@ public:
    //   Provides is a 'has' relationship
    //   Requires is a list o
 
-   virtual void AddRequires(Package* p);
-   virtual void AddProvides(Package* p);
    virtual void AddImport(Package* p);
    virtual void AddExport(Package* p);
    virtual void Link();
+   void Link(Package* rsh);
 
 private:
-
    // For storing inter package dependencies
    std::set<Package*> m_Imports;
    std::set<Package*> m_Exports;
-
-   Name_t m_Name;
-
+   Callback<Package>& m_Callback;
 protected:
    Package* m_Parent;
 };

@@ -59,13 +59,13 @@ IF (CYGWIN)
 	SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} imagehlp)
 ENDIF (CYGWIN)
 
-ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
-TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
+#ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
+#TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
 
 SUBDIRS(test)
 
-ADD_TEST("smoke" nmdepend --help)
-ADD_TEST("run-on-example" nmdepend ../example)
+#ADD_TEST("smoke" nmdepend --help)
+#ADD_TEST("run-on-example" nmdepend ../example)
 
 
 INSTALL_TARGETS(/bin nmdepend)

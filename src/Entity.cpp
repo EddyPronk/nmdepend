@@ -18,11 +18,11 @@
 
 #include "Entity.h"
 
-Entity::Entity(const Name_t& name, Entity* owner) : m_Name(name), m_Owner(owner)
+Entity::Entity(const std::string& name) : m_Name(name)
 {
 }
 
-std::string Entity::Name() const
+const std::string& Entity::Name() const
 {
    return m_Name;
 }

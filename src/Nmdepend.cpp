@@ -98,13 +98,14 @@ public:
          --p; // 1 level higher for visual studio
          std::string packagename = *p;
 
-         ObjectFile* o = new ObjectFile(name,m_symbols); //memory leak
+         Callback c;
+         ObjectFile* o = new ObjectFile(c, name,m_symbols); //memory leak
 
          Package* pack = packages[packagename];
          if (pack == 0)
          {
             //std::cout << "Adding package " << packagename << std::endl;
-            pack = new ObjectPackage(packagename); //memory leak
+            pack = new ObjectPackage(c, packagename); //memory leak
             packages[packagename] = pack;
          }
 

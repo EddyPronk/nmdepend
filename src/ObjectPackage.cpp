@@ -23,10 +23,13 @@
 #include "ObjectPackage.h"
 #include <iostream>
 
-ObjectPackage::ObjectPackage(const Name_t& name) : Package(name)
+ObjectPackage::ObjectPackage(Callback<ObjectPackage>& callback, const std::string& name)
+ : Entity(name)
+ , m_Callback(callback)
 {
 }
 
+#if 0
 void ObjectPackage::AddRequires(Package* p)
 {
    m_Requires.insert(p);
@@ -38,28 +41,30 @@ void ObjectPackage::AddProvides(Package* p)
    m_Provides.insert(p);
    std::cout << Name() << " provides " << p->Name() << std::endl;
 }
+#endif
 
 void ObjectPackage::AddImport(Package* p)
 {
    //std::cout << "ObjectPackage::AddImport" << std::endl;
-   Package::AddImport(p);
+   //Package::AddImport(p);
 }
 
 void ObjectPackage::AddExport(Package* p)
 {
    //   std::cout << "ObjectPackage::AddExport" << std::endl;
-      Package::AddExport(p);
+   //Package::AddExport(p);
 }
 
 void ObjectPackage::Link()
 {
-   for(std::set<Package*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
+   for(std::set<ObjectFile*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
    {
-      std::cout << "ObjectPackage::Link " << (*pos)->Name() << std::endl;
-      (*pos)->Link();
+      //std::cout << "ObjectPackage::Link " << (*pos)->Name() << std::endl;
+      //(*pos)->Link();
    }
 }
 
+#if 0
 void ObjectPackage::Provides(SubPackageList_t& list)
 {
    list.clear();
@@ -69,5 +74,12 @@ void ObjectPackage::Provides(SubPackageList_t& list)
       list.push_back(*pos);
       std::cerr << Name() << " ObjectPackage::provides " << (*pos)->Name() << std::endl;
    }
+}
+#endif
+
+void ObjectPackage::Link(ObjectPackage& rsh)
+{
+  m_Callback(*this, rsh);
+  Parent()->Link(rsh.Parent());
 }
 

@@ -23,16 +23,14 @@
 #include "Package.h"
 #include <iostream>
 
-Package::Package(const Name_t& name) : m_Name(name), m_Parent(0)
+Package::Package(Callback<Package>& callback, const std::string& name)
+ : Entity(name)
+ , m_Parent(0)
+ , m_Callback(callback)
 {
 }
 
-Package::Name_t& Package::Name()
-{
-   return m_Name;
-}
-
-Package::Name_t Package::Name2()
+std::string Package::Name2()
 {
    std::string name = Name();
 
@@ -41,20 +39,10 @@ Package::Name_t Package::Name2()
   return name.substr(0, name.rfind(".o"));
 }
 
-void Package::SetParent(Package& parent)
+/*void Package::SetParent(Package& parent)
 {
    m_Parent = &parent;
-   parent.AddProvides(this); // todo remove argumement
-   //parent.m_Contains.insert(this);
-}
-
-void Package::AddRequires(Package* p)
-{
-}
-
-void Package::AddProvides(Package* p)
-{
-}
+}*/
 
 void Package::AddImport(Package* p)
 {
@@ -84,15 +72,6 @@ void Package::AddExport(Package* p)
    }
 }
 
-void Package::Imports()
-{
-   for(Index_t::iterator pos = m_Imports.begin()
-      ; pos != m_Imports.end(); ++pos)
-   {
-      std::cout << Name() << " -> " << (*pos)->Name() << std::endl;
-   }
-}
-
 void Package::Imports(SubPackageList_t& list)
 {
    list.clear();
@@ -104,10 +83,10 @@ void Package::Imports(SubPackageList_t& list)
    }
 }
 
-void Package::Provides(SubPackageList_t& list)
+/*void Package::Provides(SubPackageList_t& list)
 {
    std::cout << "Provides" << std::endl;
-}
+}*/
 
 void Package::Link()
 {
@@ -116,5 +95,10 @@ void Package::Link()
 bool Package::Depend(const Package& package) const
 {
   return true; 
+}
+
+void Package::Link(Package* rsh)
+{
+  m_Callback(*this, *rsh);
 }
 

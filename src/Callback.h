@@ -16,43 +16,29 @@
 // along with Nmdepend; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef CALLBACK_H
+#define CALLBACK_H
 
-#include <string>
-
-template<class P>
-class IParent
+template<class T>
+class CallbackBase
 {
 public:
-  IParent() : m_Parent(NULL)
+  virtual void operator()(T&, T&)
   {
-  }
-  
-  void SetParent(P& p)
-  {
-    m_Parent = &p;
-  }
-  P* Parent()
-  {
-    return m_Parent;
+    std::cout << "CallbackBase operator()" << std::endl;
   }
 private:
-  P* m_Parent;
 };
 
-class Entity
+template<class T>
+class Callback : public CallbackBase<T>
 {
 public:
-  Entity(const std::string&);
-  const std::string& Name() const;
-  friend std::ostream& operator<<(std::ostream& out, const Entity& e)
+  virtual void operator()(T&, T&)
   {
-    return out << e.m_Name;
+    std::cout << "Callback operator()" << std::endl;
   }
 private:
-  std::string m_Name;
 };
 
 #endif
-

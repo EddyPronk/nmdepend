@@ -25,8 +25,10 @@
 
 #include "bfd.h"
 
-ObjectFile::ObjectFile(const Package::Name_t& name, SymbolStore& store)
-: Package(name), m_SymbolStore(store)
+ObjectFile::ObjectFile(Callback<ObjectFile>& callback, const std::string& name, SymbolStore& store)
+ : m_Callback(callback)
+ , Entity(name)
+ , m_SymbolStore(store)
 {
 }
 
@@ -71,19 +73,18 @@ void ObjectFile::Link()
     {
       if (owner != this)
       {
+        m_Callback(*this, *owner);
+        Parent()->Link(*owner->Parent());
         std::string demangled = r->Demangled();
         if (demangled.find("scalar deleting destructor") == std::string::npos)
         {
-          m_Parent->AddRequires(owner);
-          AddImport(owner);
-          owner->AddExport(this);
-          std::cout << "symbol " << s << "::" << demangled << " found in "
-                    << owner->Name() << std::endl;
+//          std::cout << "symbol " << s << "::" << demangled << " found in "
+//                    << owner->Name() << std::endl;
         }
         else
         {
-          std::cout << "ignored " << s << "::" << demangled << " found in "
-                    << owner->Name() << std::endl;
+//          std::cout << "ignored " << s << "::" << demangled << " found in "
+//                    << owner->Name() << std::endl;
         }
       }
     }

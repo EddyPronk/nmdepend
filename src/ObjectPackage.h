@@ -25,28 +25,28 @@
 #include <map>
 
 #include "Package.h"
+#include "Callback.h"
 
 class ObjectFile;
 
 // Implements Requires/Provides containers.
 
-class ObjectPackage : public Package
+
+class ObjectPackage : public Entity,  public IParent<Package>
 {
 public:
-   ObjectPackage(const std::string& name);
-   virtual void AddRequires(Package* p);
-   virtual void AddProvides(Package* p);
+   ObjectPackage(Callback<ObjectPackage>&, const std::string& name);
    virtual void AddImport(Package* p);
    virtual void AddExport(Package* p);
 
-   virtual void Provides(SubPackageList_t& list);
-
-
    void Link();
+   void Link(ObjectPackage&);
 
 public:
-   std::set<Package*> m_Requires;
-   std::set<Package*> m_Provides;
+   std::set<ObjectFile*> m_Requires;
+   std::set<ObjectFile*> m_Provides;
+private:
+   Callback<ObjectPackage>& m_Callback;
 };
 
 #endif
