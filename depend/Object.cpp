@@ -145,6 +145,7 @@ bool Object::Depend(const Symbol& s) const
 {
   return m_Object->second.Import.find(s) != m_Object->second.Import.end();
 }
+
 bool Object::Depend(const Object& o) const
 {
   const std::set<Symbol>& imprt(m_Object->second.Import);

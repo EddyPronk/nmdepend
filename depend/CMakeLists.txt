@@ -1,5 +1,3 @@
-SET(CMAKE_MODULE_PATH /home/nmdepend/cmake)
-
 FIND_PACKAGE(Boost)
 FIND_PACKAGE(Binutils)
 
