@@ -1,4 +1,5 @@
 FIND_PACKAGE(CppUnit)
+FIND_PACKAGE(Perl)
 
 INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES} ${CppUnit_INCLUDE_DIR})
 
@@ -6,5 +7,7 @@ ADD_EXECUTABLE (cppunit Main.cpp ObjectFileTest.cpp NewTest.cpp)
 TARGET_LINK_LIBRARIES(cppunit core ${Nmdepend_LIBRARIES} ${CppUnit_LIBRARY})
 
 ADD_TEST("CppUnit" cppunit)
+ADD_TEST("CheckOutputProject1" ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/checkOutput.pl project1 ${CMAKE_CURRENT_SOURCE_DIR} 1)
+ADD_TEST("CheckOutputProject2" ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/checkOutput.pl project2 ${CMAKE_CURRENT_SOURCE_DIR} 2)
 
 SUBDIRS(project1 project2)

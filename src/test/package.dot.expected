@@ -1,0 +1,7 @@
+digraph G {
+0[label="app"];
+1[label="sub1"];
+2[label="sub2"];
+0->1 ;
+1->2 ;
+}

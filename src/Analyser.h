@@ -67,6 +67,10 @@ class Analyser
 public:
    typedef std::vector<fs::path> filelist_t;
 
+   Analyser(int packageLevel) : m_packageLevel(packageLevel)
+   {
+   }
+   
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
    void find_file( const fs::path& dir_path)
    {
@@ -96,6 +100,7 @@ public:
 
    void ReadObjects()
    {
+      std::cout << "package level << " << m_packageLevel << std::endl;
        // temporary
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
       {
@@ -105,7 +110,10 @@ public:
          --p; //file
          std::string name = *p;
          --p; //directory containing file -> Release or Debug using msvc
-         //--p; // 1 level higher for visual studio
+         if(m_packageLevel == 2)
+         {
+           --p;
+         }
          std::string packagename = *p;
          
          cout << pos->string() << endl;
@@ -161,4 +169,5 @@ private:
    std::set<ObjectPackage> m_PackageSet;
    std::vector<ObjectPackage*> m_Packages;
    std::vector<ObjectFile*> m_ObjectFiles;
+   int m_packageLevel;
 };

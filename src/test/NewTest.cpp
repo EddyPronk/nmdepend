@@ -52,6 +52,7 @@ class NewTest : public CPPUNIT_NS::TestFixture
   CPPUNIT_TEST_SUITE( NewTest );
   CPPUNIT_TEST( newTest );
   CPPUNIT_TEST( newTest2 );
+  CPPUNIT_TEST( newTest3 );
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -63,7 +64,7 @@ protected:
 
   void newTest()  
   {
-    Analyser a;
+    Analyser a(1);
     fs::path exampleDir = fs::initial_path() / "project1";
     exampleDir.normalize();
     a.find_file(exampleDir);
@@ -71,6 +72,15 @@ protected:
   }
 
   void newTest2()  
+  {
+    Analyser a(1);
+    fs::path exampleDir = fs::initial_path() / "project1";
+    exampleDir.normalize();
+    a.find_file(exampleDir);
+    a.ReadObjects();
+  }
+
+  void newTest3()  
   {
     Graph<ObjectFile> g;
     SymbolStore store;
