@@ -31,9 +31,8 @@ class A
 class ObjectFileTest : public CPPUNIT_NS::TestFixture
 {
   CPPUNIT_TEST_SUITE( ObjectFileTest );
-  CPPUNIT_TEST( example );
   CPPUNIT_TEST( testSymbolStore );
-  CPPUNIT_TEST( test1 );
+  CPPUNIT_TEST( linkTwoObjects );
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -48,19 +47,6 @@ public:
   }
 
 protected:
-
-  void example()
-  {
-    SymbolStore store;
-    
-    ObjectPackage aa("aa"); // superpackage of a
-    ObjectFile a("a.obj", store);
-    ObjectFile b("b.obj", store);
-    a.SetParent(aa);
-    a.AddImportSymbol("func1");
-    b.AddExportSymbol("func1");
-    CPPUNIT_ASSERT(true);
-  }
 
   void testSymbolStore()  
   {
@@ -82,11 +68,13 @@ protected:
     
   }
   
-  void test1()  
+  void linkTwoObjects()  
   {
     SymbolStore store;
 
+    Package aaa("aaa");
     ObjectPackage aa("aa"); // superpackage of a
+    aa.SetParent(aaa);
     ObjectFile a("a.obj", store);
     a.SetParent(aa);
 
@@ -95,13 +83,19 @@ protected:
     a.AddImportSymbol("c");
     a.AddImportSymbol("d");
 
+    Package bbb("bbb");
     ObjectPackage bb("bb"); // superpackage of b
+    bb.SetParent(bbb);
     ObjectFile b("b.obj", store);
     b.SetParent(bb);
 
     b.AddExportSymbol("a");
     b.AddExportSymbol("b");
     b.AddExportSymbol("c");
+
+    CPPUNIT_ASSERT(!a.Depend(b));
+    CPPUNIT_ASSERT(!aa.Depend(bb));
+    CPPUNIT_ASSERT(!aaa.Depend(bbb));
 
     // Link all objects
     a.Link();
@@ -112,5 +106,7 @@ protected:
     a.intersection(b, inter);
     CPPUNIT_ASSERT(!inter.empty());
     CPPUNIT_ASSERT(a.Depend(b));
+    CPPUNIT_ASSERT(aa.Depend(bb));
+    CPPUNIT_ASSERT(aaa.Depend(bbb));
   }
 };
