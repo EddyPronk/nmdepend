@@ -123,10 +123,18 @@ void ObjectFile::Read(bfd* file)
     assert(sym);
 
     const char* symname = bfd_asymbol_name (sym);
-
+    
     if (sym->flags == 0)
     {
-      AddImportSymbol(symname);
+      asection* section = bfd_get_section (sym);
+      if (bfd_is_und_section (section))
+      {
+        AddImportSymbol(symname);
+      }
+      else
+      {
+        AddExportSymbol(symname);
+      } 
     }
 
     if(sym->flags & BSF_FUNCTION)
