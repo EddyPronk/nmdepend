@@ -112,3 +112,9 @@ void Package::Provides(SubPackageList_t& list)
 void Package::Link()
 {
 }
+
+bool Package::Depend(const Package& package) const
+{
+  return true; 
+}
+

@@ -44,6 +44,8 @@ public:
    virtual void Provides(SubPackageList_t& list);
    Name_t& Name();
 
+   bool Depend(const Package&) const;
+
    // todo Rename/remove this
    Name_t Name2();
 
