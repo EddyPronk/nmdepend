@@ -75,7 +75,6 @@ int main( int argc, char ** argv )
     if (option_level.hasValue())
     {
       level = atoi(option_level.values[0]);
-      cerr << "level " << level << endl;
     }
   	
     if ( helparg.numSet )

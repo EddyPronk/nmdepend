@@ -26,6 +26,8 @@ class SymbolStore
 {
 public:
   SymbolPtr Add(const std::string& name);
+  void SymbolStore::Statistics();
+
 private:
   std::set<Symbol> m_Symbols;
 };

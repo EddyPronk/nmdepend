@@ -50,7 +50,7 @@ TARGET_LINK_LIBRARIES(core
 #	${INTL_LIBRARY}
  	${IBERTY_LIBRARY}
  	${Boost_Filesystem_LIBRARY}
- 	${Boost_Regex_LIBRARY}
+# 	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
         /usr/lib/libdl.a

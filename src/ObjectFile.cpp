@@ -16,10 +16,6 @@
 // along with Nmdepend; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifdef _MSC_VER
-#pragma warning( disable : 4786)
-#endif
-
 #include <iostream>
 #include <cassert>
 #include "ObjectFile.h"
@@ -42,7 +38,7 @@ void ObjectFile::AddImportSymbol(const std::string& name)
 
 void ObjectFile::AddExportSymbol(const std::string& name)
 {
-	SymbolPtr p = m_SymbolStore.Add(name);
+  SymbolPtr p = m_SymbolStore.Add(name);
   Symbol& sym = *p; 
   if(!sym.foundOwner())
   {
@@ -133,7 +129,12 @@ void ObjectFile::Read(bfd* file)
       AddImportSymbol(symname);
     }
 
-    if((sym->flags & BSF_FUNCTION) != 0)
+    if(sym->flags & BSF_FUNCTION)
+    {
+      AddExportSymbol(symname);
+    }
+
+    if(sym->flags & BSF_OBJECT)
     {
       AddExportSymbol(symname);
     }

@@ -144,6 +144,7 @@ public:
          std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
       }
+      m_symbols.Statistics();
    }
    
    void WriteObjectGraph(std::ostream& out)
