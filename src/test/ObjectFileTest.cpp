@@ -90,17 +90,12 @@ protected:
     ObjectFile a("a.obj", store);
     a.SetParent(aa);
 
-    std::cout << "step 1" << std::endl;
-
-    //   a.AddImportSymbol("a");
     a.AddImportSymbol("b");
     a.AddImportSymbol("c");
     a.AddImportSymbol("c");
     a.AddImportSymbol("d");
 
-    std::cout << "step 2" << std::endl;
-
-    ObjectPackage bb("bb"); // superpackage of a
+    ObjectPackage bb("bb"); // superpackage of b
     ObjectFile b("b.obj", store);
     b.SetParent(bb);
 
@@ -108,27 +103,14 @@ protected:
     b.AddExportSymbol("b");
     b.AddExportSymbol("c");
 
-    std::cout << "Link" << std::endl;
+    // Link all objects
     a.Link();
-    
+    b.Link();
 
     std::set<SymbolPtr> inter;
 
-    std::cout << "test intersection" << std::endl;
-
     a.intersection(b, inter);
     CPPUNIT_ASSERT(!inter.empty());
-    
-    for(ObjectFile::SymIndex_t::iterator i = inter.begin(); i != inter.end(); ++i)
-    {
-//      std::cout << i->m_Name << std::endl;
-    }
-    
-    
-
-    //a.Imports();
-    //aa.Imports();  
-
     CPPUNIT_ASSERT(a.Depend(b));
   }
 };
