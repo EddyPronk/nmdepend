@@ -52,10 +52,6 @@ struct wrapper
 class Analyser
 {
 public:
-   Analyser() : m_dummypackage(m_Graph2, "dummy")
-   {
-   }
-   
    typedef std::vector<fs::path> filelist_t;
 
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
@@ -100,8 +96,13 @@ public:
          
          cout << pos->string() << endl;
          ObjectFile* o = new ObjectFile(m_Graph, name, m_symbols);
+
+         std::pair<std::set<ObjectPackage>::iterator,bool> status =
+              packages.insert(ObjectPackage(m_Graph2, packagename));
+
+         ObjectPackage* op = const_cast<ObjectPackage*>(&(*(status.first)));
          o->Read(*pos);
-         o->SetParent(m_dummypackage);
+         o->SetParent(*op);
          m_ObjectFiles.push_back(o);
       }
    }
@@ -115,14 +116,16 @@ public:
          std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
       }
+      wrapper w(m_ObjectFiles);
+      boost::write_graphviz(cout, m_Graph.get(),
+        boost::make_label_writer(w));
    }
    
 private:
-   ObjectPackage m_dummypackage;
    filelist_t list;
    SymbolStore m_symbols;
    Graph m_Graph;
    CallBackDummy<ObjectPackage> m_Graph2;
-   
+   std::set<ObjectPackage> packages;
    std::vector<ObjectFile*> m_ObjectFiles;
 };

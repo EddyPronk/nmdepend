@@ -77,7 +77,9 @@ void ObjectPackage::Provides(SubPackageList_t& list)
 void ObjectPackage::Link(ObjectPackage& rsh)
 {
   m_Callback(*this, rsh);
-  assert(Parent());
-  Parent()->Link(rsh.Parent());
+  if(Parent())
+  {
+    Parent()->Link(rsh.Parent());
+  }
 }
 

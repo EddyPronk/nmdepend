@@ -42,6 +42,11 @@ public:
    void Link();
    void Link(ObjectPackage&);
 
+   bool operator < (const ObjectPackage& rhs) const
+   {
+     return Name() < rhs.Name();
+   }
+
 public:
    std::set<ObjectFile*> m_Requires;
    std::set<ObjectFile*> m_Provides;
