@@ -11,10 +11,10 @@ FIND_LIBRARY(BFD_LIBRARY
   PATHS /usr/lib ${Binutils_BUILD_DIR}/bfd
   DOC "Regular expressions. Boost >=1.31 has compiler suffix for library names")
 
-#FIND_LIBRARY(INTL_LIBRARY 
-#  NAMES intl 
-#  PATHS /usr/lib ${Binutils_BUILD_DIR}/intl
-#  DOC "Regular expressions. Boost >=1.31 has compiler suffix for library names")
+FIND_LIBRARY(INTL_LIBRARY 
+  NAMES intl 
+  PATHS /usr/lib ${Binutils_BUILD_DIR}/intl
+  DOC "Regular expressions. Boost >=1.31 has compiler suffix for library names")
 
 FIND_LIBRARY(IBERTY_LIBRARY
   NAMES iberty 

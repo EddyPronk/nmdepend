@@ -1,10 +1,34 @@
 PROJECT(nmdepend)
 
 SET(CMAKE_VERBOSE_MAKEFILE 1)
+ENABLE_TESTING()
+
+#
+# Options
+#
+
+#OPTION(BUILD_SHARED_LIBS "Build with shared libraries." ON)
+OPTION(BUILD_TESTING "Build the testing tree." ON)
+
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+#
+# Testing
+#
+
+IF(BUILD_TESTING)
+  INCLUDE (${CMAKE_ROOT}/Modules/Dart.cmake)
+  ENABLE_TESTING()
+#  IF (EXECUTABLE_OUTPUT_PATH)
+#    SET (CXX_TEST_PATH ${EXECUTABLE_OUTPUT_PATH})
+#  ELSE (EXECUTABLE_OUTPUT_PATH)
+#    SET (CXX_TEST_PATH .)
+#  ENDIF (EXECUTABLE_OUTPUT_PATH)
+ENDIF(BUILD_TESTING)
+
+
 SUBDIRS(
-#  example
+  example
   src
 #  depend
   )

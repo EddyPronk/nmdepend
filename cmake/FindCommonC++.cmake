@@ -8,6 +8,7 @@ FIND_LIBRARY(CommonC++_ccext2_LIBRARY
   ${CommonC++_ROOT_DIR}/lib
   /usr/lib
   /usr/local/lib
+  /cygdrive/d/projects/libraries/export/lib  
   )
 
 FIND_LIBRARY(CommonC++_ccgnu2_LIBRARY
@@ -15,5 +16,6 @@ FIND_LIBRARY(CommonC++_ccgnu2_LIBRARY
   ${CommonC++_ROOT_DIR}/lib
   /usr/lib
   /usr/local/lib
+  /cygdrive/d/projects/libraries/export/lib
   )
 

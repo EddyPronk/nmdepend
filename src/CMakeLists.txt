@@ -15,10 +15,12 @@ FIND_PACKAGE(CommonC++)
 FIND_PACKAGE(Binutils)
 FIND_PACKAGE(Zlib)
 
-SET(CMAKE_CXX_FLAGS "-g3") # huh?
+#SET(CMAKE_CXX_FLAGS "-g3") # huh?
+SET(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
+
 
 IF (CYGWIN)
-  SET (CMAKE_CXX_FLAGS "-DBOOST_POSIX ")
+  SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_POSIX")
 #  SET (CMAKE_EXE_LINKER_FLAGS "-mwindows -e _mainCRTStartup")
 #  SET (CMAKE_EXE_LINKER_FLAGS "-mno-cygwin")
 ENDIF (CYGWIN)
@@ -42,14 +44,14 @@ ADD_LIBRARY(core
 
 SET(Nmdepend_LIBRARIES
 	${BFD_LIBRARY}
-#	${INTL_LIBRARY}
+	${INTL_LIBRARY}
  	${IBERTY_LIBRARY}
  	${Boost_Filesystem_LIBRARY}
  	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
         ${ZLIB_LIBRARY}
-        /usr/lib/libdl.a
+    #    /usr/lib/libdl.a
  	)
 
 IF (CYGWIN)
@@ -67,5 +69,9 @@ TARGET_LINK_LIBRARIES(test2 core ${Nmdepend_LIBRARIES})
 
 ADD_EXECUTABLE (test4 test/test4.cpp)
 TARGET_LINK_LIBRARIES(test4 core ${Nmdepend_LIBRARIES})
+
+ADD_TEST("smoke" nmdepend --help)
+ADD_TEST("run-on-example" nmdepend ../example)
+
 
 INSTALL_TARGETS(/bin nmdepend)
