@@ -20,18 +20,7 @@
 #define CALLBACK_H
 
 template<class T>
-class CallbackBase
-{
-public:
-  virtual void operator()(T&, T&)
-  {
-    std::cout << "CallbackBase operator()" << std::endl;
-  }
-private:
-};
-
-template<class T>
-class Callback : public CallbackBase<T>
+class Callback
 {
 public:
   virtual void operator()(T&, T&)
