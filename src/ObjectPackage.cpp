@@ -76,10 +76,13 @@ void ObjectPackage::Provides(SubPackageList_t& list)
 
 void ObjectPackage::Link(ObjectPackage& rsh)
 {
-  m_Callback(*this, rsh);
-  if(Parent())
+  if (this != &rsh)
   {
-    Parent()->Link(rsh.Parent());
+    m_Callback(*this, rsh);
+    if(Parent())
+    {
+      Parent()->Link(rsh.Parent());
+    }
   }
 }
 

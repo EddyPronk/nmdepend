@@ -8,5 +8,6 @@ node [shape=box]
 5[label="e.o"];
 6[label="f.o"];
 0->1 ;
+1->2 ;
 2->6 ;
 }

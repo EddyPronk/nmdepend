@@ -1,3 +1,5 @@
+int ab;
+
 void b()
 {
    extern int ff;

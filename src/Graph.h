@@ -54,6 +54,7 @@ public:
   }
   virtual void operator()(T& from, T& to)
   {
+    assert( from.Name() != to.Name() );
     add_edge(m_Indexes[&from], m_Indexes[&to], m_Graph);
   }
   type& get()
