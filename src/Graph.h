@@ -34,7 +34,15 @@ template<class T>
 class Graph : public Callback<T>
 {
 public:
-  typedef boost::adjacency_list<> type;
+  typedef boost::adjacency_list<
+    boost::setS,
+    boost::vecS,
+    boost::directedS
+  > type;
+  //typedef boost::graph_traits<type>::
+  //  edge_parallel_category
+  //  boost::disallow_parallel_edge_tag;
+
 
   void init(const std::vector<T*>& v)
   { 
