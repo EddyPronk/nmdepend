@@ -28,13 +28,14 @@ public:
   typedef std::set<SymbolPtr> SymIndex_t;
 
   Entity(const std::string& name);
+  virtual ~Entity() {}
   void SetParent(Entity& p);
   Entity* Parent();
   const std::string& Name() const;
   virtual void Link() {}
   virtual void Link(Entity&) {}
   virtual bool Depend(const Entity&) const { return false; }
-  virtual void intersection(const Entity&, SymIndex_t& i) const {}
+//  virtual void intersection(const Entity&, SymIndex_t& i) const {}
 private:
   friend std::ostream& operator<<(std::ostream& out, const Entity& e)
   {

@@ -12,7 +12,7 @@ Bfd::Bfd(Factory& factory)
 {
 }
 
-Entity* Bfd::Read(const boost::filesystem::path& path)
+Entity* Bfd::Read(const boost::filesystem::path& path, int packageLevel)
 {
   char *target = 0;
   bfd* file = bfd_openr (path.string().c_str(), target);
@@ -20,29 +20,38 @@ Entity* Bfd::Read(const boost::filesystem::path& path)
 
   Entity* object = NULL;
 
+  fs::path::iterator p = path.end();
+  --p;
+  std::string name = *p;
+ 
   if (bfd_check_format (file, bfd_object))
   {
-    fs::path::iterator p = path.end();
     --p;
-    std::string name = *p;
+    if(packageLevel == 2)
+    {
+      --p;
+    }
+    std::string packagename = *p;
+  
+    ObjectPackage* op = m_Factory.CreatePackage(packagename);
+    assert(op);
     ObjectFile* of = m_Factory.CreateObject(name);
     of->Read(file);
-    object = of;
+    of->SetParent(*op);
+    object = op;
   }
 
   if (bfd_check_format (file, bfd_archive))
   {
-    ObjectPackage* package = m_Factory.CreatePackage("bla");
+    ObjectPackage* package = m_Factory.CreatePackage(name);
     object = package;
-    //    display_archive (file);
     bfd *arfile = 0;
 
     std::cout << "file " << bfd_get_filename (file) << std::endl;
 
-    while(arfile = bfd_openr_next_archived_file (file, arfile))
+    while((arfile = bfd_openr_next_archived_file (file, arfile)))
     {
       const char* objectname = bfd_get_filename (arfile);
-   //   assert(false);
       ObjectFile* o = m_Factory.CreateObject(objectname);
       o->SetParent(*package);
       o->Read(arfile);

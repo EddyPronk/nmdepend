@@ -51,9 +51,9 @@ public:
       m_Indexes[v[i]] = i;
     }
   }
-  virtual void operator()(Entity& from, Entity& to)
+  void operator()(Entity& from, Entity& to)
   {
-    assert( from.Name() != to.Name() );
+ //   assert( from.Name() != to.Name() );
     add_edge(m_Indexes[&from], m_Indexes[&to], m_Graph);
   }
   type& get()

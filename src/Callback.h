@@ -27,6 +27,7 @@ using namespace std;
 class Callback
 {
 public:
+  virtual ~Callback() {}
   virtual void operator()(Entity&, Entity&)
   {
     std::cout << "Callback operator()" << std::endl;

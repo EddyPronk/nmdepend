@@ -25,8 +25,8 @@
 using namespace std;
 
 ObjectFile::ObjectFile(Callback& callback, const std::string& name, SymbolStore& store)
- : m_Callback(callback)
- , Entity(name)
+ : Entity(name)
+ , m_Callback(callback)
  , m_SymbolStore(store)
 {
 }
@@ -59,7 +59,6 @@ void ObjectFile::Link()
     ; pos != m_SymImports.end(); ++pos)
   {
     const SymbolPtr r = *pos;
-    const std::string& s = r->Name();
     
     ObjectFile* owner = r->Owner();
     if(owner)

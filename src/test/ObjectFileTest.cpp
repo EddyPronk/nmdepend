@@ -50,6 +50,7 @@ public:
   friend std::ostream& operator<<(std::ostream& out, const pair& v)
   {
     out << *(v.first) << " " << *(v.second);
+    return out;
   }
 private:  
   pair m_Pair;

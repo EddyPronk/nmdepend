@@ -26,9 +26,9 @@ namespace fs = boost::filesystem;
 using namespace std;
 
 Analyser::Analyser(int packageLevel)
- : m_packageLevel(packageLevel)
+ : m_Bfd(m_Factory)
  , m_Factory(m_ObjectGraph, m_PackageGraph)
- , m_Bfd(m_Factory)
+ , m_packageLevel(packageLevel)
 {
 }
    
@@ -71,22 +71,8 @@ else
    {
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
       {
-         fs::path::iterator p = pos->end();
-         --p;
-         std::string name = *p;
-         --p;
-         if(m_packageLevel == 2)
-         {
-           --p;
-         }
-         std::string packagename = *p;
-         
-         Entity* o = m_Bfd.Read(*pos);
-         assert(o);
-
-         ObjectPackage* op = m_Factory.CreatePackage(packagename);
-         assert(op);
-         o->SetParent(*op);
+        Entity* o = m_Bfd.Read(*pos, m_packageLevel);
+        assert(o);
       }
       
       for(std::set<ObjectPackage>::iterator i = m_Factory.m_PackageSet.begin(); i != m_Factory.m_PackageSet.end(); ++i)
