@@ -1,7 +1,10 @@
 PROJECT(nmdepend)
 
+SET(CMAKE_VERBOSE_MAKEFILE 1)
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 SUBDIRS(
-  example
+#  example
   src
-  depend
+#  depend
   )

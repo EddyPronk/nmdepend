@@ -48,7 +48,7 @@ std::string Symbol::Demangled()
 
    if (m_Name[0] == '?')
    {
-      style = msvc_demangling;
+   //   style = msvc_demangling;
    }
 
 #ifdef _MSC_VER

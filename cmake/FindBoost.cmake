@@ -4,11 +4,10 @@ FIND_PATH(Boost_ROOT_DIR boost/utility.hpp
 		    /usr/local/include
 		    /opt
 		    /opt/include
-		    ${PROJECT_SOURCE_DIR}/../boost
 		    DOC "Path to Boost directory"
 	)
 
-SET(Boost_VER 1_31)
+SET(Boost_VER 1_32)
 SET(Boost_INCLUDE_DIR ${Boost_ROOT_DIR})
 	    
 SET(Boost_LIB_SUFFIX "gcc")

@@ -3,7 +3,7 @@
 
 INCLUDE (${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
 
-SET(CMAKE_MODULE_PATH /home/nmdepend/cmake)
+#SET(CMAKE_MODULE_PATH /home/nmdepend/cmake)
 
 SET(INCLUDES "")
 CHECK_INCLUDE_FILES("${INCLUDES};bfd.h" HAVE_BFD_H)
@@ -13,6 +13,7 @@ SET(CMAKE_VERBOSE_MAKEFILE 1)
 FIND_PACKAGE(Boost)
 FIND_PACKAGE(CommonC++)
 FIND_PACKAGE(Binutils)
+FIND_PACKAGE(Zlib)
 
 SET(CMAKE_CXX_FLAGS "-g3") # huh?
 
@@ -41,12 +42,14 @@ ADD_LIBRARY(core
 
 SET(Nmdepend_LIBRARIES
 	${BFD_LIBRARY}
-	${INTL_LIBRARY}
+#	${INTL_LIBRARY}
  	${IBERTY_LIBRARY}
  	${Boost_Filesystem_LIBRARY}
  	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
+        ${ZLIB_LIBRARY}
+        /usr/lib/libdl.a
  	)
 
 IF (CYGWIN)

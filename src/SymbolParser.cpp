@@ -20,10 +20,10 @@
 
 //#define BOOST_SPIRIT_DEBUG
 
-#include <boost/spirit/core.hpp>
-#include <boost/spirit/iterator.hpp>
-#include <boost/spirit/utility/loops.hpp>
-#include <boost/spirit/tree/ast.hpp>
+#include "boost/spirit/core.hpp"
+#include "boost/spirit/iterator.hpp"
+#include "boost/spirit/utility/loops.hpp"
+#include "boost/spirit/tree/ast.hpp"
 #include <iostream>
 #include <string>
 
