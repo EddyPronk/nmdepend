@@ -67,7 +67,7 @@ int main( int argc, char ** argv )
 
   	if ( option_version.numSet )
     {
-      cerr << "nmdepend version (" __DATE__ ")" << endl;
+      cerr << "nmdepend - build date : " __DATE__  << endl;
      	::exit(0);
 	  }
 

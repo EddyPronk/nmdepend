@@ -138,7 +138,6 @@ void ObjectFile::Read(bfd* file)
 
 bool ObjectFile::Depend(const Entity& o) const
 {
-cout << __PRETTY_FUNCTION__ << endl;
   SymIndex_t intersect;
   intersection(o, intersect);
 

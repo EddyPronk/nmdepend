@@ -21,10 +21,6 @@
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
 #include "Analyser.h"
-#include "Graph.h"
-#include "Callback.h"
-#include "ObjectPackage.h"
-#include "ObjectFile.h"
 
 namespace fs = boost::filesystem;
 using namespace std;
@@ -76,13 +72,11 @@ void Analyser::find_file( const fs::path& dir_path)
          std::string packagename = *p;
          
          Entity* o = m_Bfd.Read(*pos);
-                // new ObjectFile(m_ObjectGraph, name, m_symbols);
 
          std::pair<std::set<ObjectPackage>::iterator,bool> status =
               m_PackageSet.insert(ObjectPackage(m_PackageGraph, packagename));
 
          ObjectPackage* op = const_cast<ObjectPackage*>(&(*(status.first)));
-         //o->Read(*pos);
          o->SetParent(*op);
          m_ObjectFiles.push_back(o);
       }
