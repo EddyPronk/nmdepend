@@ -10,12 +10,6 @@ IF (CYGWIN)
 #  SET (CMAKE_EXE_LINKER_FLAGS "-mwindows -e _mainCRTStartup")
 ENDIF (CYGWIN)
 
-#INCLUDE (C:/Data/Ccm62/Ccm_wa/dali~Eddy/dali/Config.cmake)
-#INCLUDE (C:/Data/Ccm62/Ccm_wa/dali~Eddy/dali/Reuse.cmake.txt)
-
-#C:/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0/stage/lib
-
-
 IF (CYGWIN)
 INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/src
