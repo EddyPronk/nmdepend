@@ -64,7 +64,7 @@ protected:
   void newTest()  
   {
     Analyser a;
-    fs::path exampleDir = fs::initial_path() / "../../example";
+    fs::path exampleDir = fs::initial_path() / "project1";
     exampleDir.normalize();
     a.find_file(exampleDir);
     a.ReadObjects();

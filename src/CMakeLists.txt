@@ -68,8 +68,8 @@ TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
 
 SUBDIRS(test)
 
-#ADD_TEST("smoke" nmdepend --help)
-#ADD_TEST("run-on-example" nmdepend ../example)
+ADD_TEST("smoke" nmdepend --help)
+ADD_TEST("run-on-example" nmdepend test/project1)
 
 
 INSTALL_TARGETS(/bin nmdepend)
