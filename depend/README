@@ -1,0 +1,46 @@
+This version of Nmdepend features generation of:
+
+-package dependency graph
+-object dependency graph (where objects are clustered in packages)
+-include dependency graph
+
+Nmdepend can be used for any C or C++ project as long as it can be
+compiled to object files (except for the include dependencies).
+
+Building:
+
+Nmdepend requires:
+
+-cmake              (http://www.cmake.org)
+-(gnu) make         (http://www.gnu.org/software/make)
+-(gnu) c++ compiler (http://gcc.gnu.org or http://www.gnu.org/software/gcc)
+-boost              (http://www.boost.org)
+-commonc++2         (http://www.gnu.org/software/commoncpp)
+
+Build and install the required tools and libraries according to their individual
+descriptions.
+
+Building nmdepend
+
+mkdir build
+cd build
+cmake . nmdepend_top_directory
+make
+
+Running:
+
+Nmdepend can be run to search source for include dependencies using the -i
+commandline option or search object files for link dependencies using the -o
+commandline option.
+
+Both options require the top directory of the project you want to analyse.
+For example having built Nmdepend you can generate the graphs by:
+
+./depend -o . 1>object.dot 2>package.dot
+./depend -i . 1>include.dot
+
+As you can see the link dependencies generated with the -o option are written to
+stdout and the link dependencies between packages are written to stderr.
+
+To render the graphs you require dot or dotty from the Graphviz
+(http://www.graphviz.org) project.
