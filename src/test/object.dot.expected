@@ -1,7 +1,5 @@
 digraph G {
-graph [bgcolor=lightgrey]
-node [shape=circle color=white]
-edge [style=dashed]
+node [shape=box]
 0[label="main.o"];
 1[label="a.o"];
 2[label="b.o"];

@@ -32,5 +32,5 @@ ENDIF(BUILD_TESTING)
 
 SUBDIRS(
   src
-#  depend
+  depend
   )

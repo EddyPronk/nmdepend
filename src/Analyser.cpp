@@ -156,7 +156,9 @@ void Analyser::find_file( const fs::path& dir_path)
    
    void Analyser::WritePackageGraph(std::ostream& out)
    {
-      wrapper<ObjectPackage> w2(m_Packages);
+      wrapper<ObjectPackage> w(m_Packages);
+      boost::default_writer def;
+      sample_graph_writer sample;
       boost::write_graphviz(out, m_PackageGraph.get(),
-        boost::make_label_writer(w2));
+        boost::make_label_writer(w), def, sample);
    }

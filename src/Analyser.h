@@ -56,9 +56,7 @@ struct sample_graph_writer
 {
   void operator()(std::ostream& out) const
   {
-    out << "graph [bgcolor=lightgrey]" << std::endl;
-    out << "node [shape=circle color=white]" << std::endl;
-    out << "edge [style=dashed]" << std::endl;
+    out << "node [shape=box]" << std::endl;
   }
 };
 
