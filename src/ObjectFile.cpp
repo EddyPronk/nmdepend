@@ -3,6 +3,7 @@
 #endif
 
 #include "ObjectFile.h"
+#include "Symbol.h"
 
 #include "bfd.h"
 
@@ -18,7 +19,7 @@ void ObjectFile::AddImportSymbol(const std::string& name)
   {
     std::cout << "AddImportSymbol " << name << std::endl;
     Symbol* s = new Symbol(this, name);
-    m_SymbolIndex[name] = s;
+    //m_SymbolIndex[name] = s;
     m_SymImports.insert(s);
   }
   else
@@ -59,11 +60,10 @@ void ObjectFile::Link()
     ; pos != m_SymImports.end(); ++pos)
   {
     std::string& s = (*pos)->m_Name;
-    //std::string s = (*pos)->Demangled();
     Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(s);
     if (p != m_SymbolIndex.end())
     {
-      Package* owner = p->second->m_Owner;
+      ObjectFile* owner = p->second->m_Owner;
       if (owner != this)
       {
         std::string demangled = (*pos)->Demangled();
@@ -109,7 +109,9 @@ void ObjectFile::Read(const boost::filesystem::path& objectfile)
   long symcount;
 
   void *minisyms;
-  bfd_boolean dynamic = bfd_fffalse;
+
+  // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
+  bfd_boolean dynamic = 0; // was: bfd_fffalse;
   //struct size_sym *symsizes;
   unsigned int size;
 

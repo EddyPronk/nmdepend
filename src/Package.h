@@ -26,7 +26,6 @@ public:
    void AddExport(Package* p);
 
 private:
-   private:
    Index_t m_Contains;
    Index_t m_Imports;
    Index_t m_Exports;

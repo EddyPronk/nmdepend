@@ -6,15 +6,19 @@
 #include <map>
 
 #include "Package.h"
+//#include "ObjectFile.h"
+
+class ObjectFile;
+
 class Symbol
 {
 public:
    typedef std::string Name_t;
    typedef std::map<Name_t, Symbol*> SymbolIndex_t;
 
-   Symbol(Package* o, const Name_t& name);
+   Symbol(ObjectFile* o, const Name_t& name);
 
-   Package* m_Owner;
+   ObjectFile* m_Owner;
    std::string Demangled();
 
 public:

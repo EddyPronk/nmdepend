@@ -14,7 +14,7 @@
 
 
 
-Symbol::Symbol(Package* o, const std::string& name) : m_Owner(o), m_Name(name)
+Symbol::Symbol(ObjectFile* o, const std::string& name) : m_Owner(o), m_Name(name)
 {
 }
 

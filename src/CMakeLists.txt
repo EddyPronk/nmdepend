@@ -17,7 +17,8 @@ ENDIF (CYGWIN)
 
 
 IF (CYGWIN)
-INCLUDE_DIRECTORIES(  /cygdrive/c//cygwin/home/nly00711/nmdepend/src
+INCLUDE_DIRECTORIES(
+  ${CMAKE_SOURCE_DIR}/src
   /cygdrive/c/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0
 )
 ELSE (CYGWIN)
@@ -27,6 +28,7 @@ ENDIF (CYGWIN)
 #LINK_DIRECTORIES( C:/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0/stage/lib )
 
 ADD_LIBRARY(nmdepend
+  Entity.h Entity.cpp
   Package.h Package.cpp
   ObjectFile.h ObjectFile.cpp
   Symbol.h Symbol.cpp

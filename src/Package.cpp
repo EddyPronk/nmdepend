@@ -33,6 +33,7 @@ void Package::AddImport(Package* p)
 {
    if (p != this)
    {
+      std::cout << "AddImport " << p->Name() << " to " << Name() << std::endl;
       m_Imports.insert(p);
    }
 
@@ -46,6 +47,7 @@ void Package::AddExport(Package* p)
 {
    if (p != this)
    {
+      std::cout << "AddExport " << p->Name() << " to " << Name() << std::endl;
       m_Exports.insert(p);
    }
 
