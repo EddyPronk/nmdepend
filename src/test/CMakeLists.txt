@@ -6,3 +6,5 @@ ADD_EXECUTABLE (cppunit Main.cpp ObjectFileTest.cpp NewTest.cpp)
 TARGET_LINK_LIBRARIES(cppunit core ${Nmdepend_LIBRARIES} ${CppUnit_LIBRARY})
 
 ADD_TEST("CppUnit" cppunit)
+
+SUBDIRS(project1 project2)

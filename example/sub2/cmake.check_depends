@@ -1,3 +1,0 @@
-# This file is used as a tag file, that all sources depend on.  If a source changes, then the rule to rebuild this file will cause cmake.depends to be rebuilt.
-all:
-	@echo cmake.depends is up-to-date
