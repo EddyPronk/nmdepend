@@ -15,7 +15,7 @@
 #include "Package.h"
 #include "Symbol.h"
 
-class bfd;
+typedef struct _bfd bfd;
 class Symbol;
 
 class ObjectFile : public Package

@@ -17,8 +17,8 @@ void ObjectFile::AddImportSymbol(const std::string& name)
   Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(name);
   if (p == m_SymbolIndex.end())
   {
-    std::cout << "AddImportSymbol " << name << std::endl;
     Symbol* s = new Symbol(this, name);
+    std::cout << "AddImportSymbol " << s->Demangled() << std::endl;
     //m_SymbolIndex[name] = s;
     m_SymImports.insert(s);
   }
@@ -34,8 +34,8 @@ void ObjectFile::AddExportSymbol(const std::string& name)
   Symbol::SymbolIndex_t::iterator p = m_SymbolIndex.find(name);
   if (p == m_SymbolIndex.end())
   {
-    std::cout << "AddExportSymbol " << name << std::endl;
     Symbol* s = new Symbol(this, name);
+    std::cout << "AddExportSymbol " << s->Demangled() << std::endl;
     m_SymbolIndex[name] = s;
     m_SymExports.insert(s);
   }
@@ -117,7 +117,7 @@ void ObjectFile::Read(bfd* file)
    void *minisyms;
 
    // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
-   bfd_boolean dynamic = 0; // was: bfd_fffalse;
+   bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
    //struct size_sym *symsizes;
    unsigned int size;
 
