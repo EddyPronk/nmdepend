@@ -35,6 +35,7 @@ INCLUDE_DIRECTORIES(
 
 ADD_LIBRARY(core
   Entity.cpp
+  Bfd.cpp
 #  Package.cpp
   ObjectFile.cpp
   ObjectPackage.cpp

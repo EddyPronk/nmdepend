@@ -29,7 +29,9 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-Analyser::Analyser(int packageLevel) : m_packageLevel(packageLevel)
+Analyser::Analyser(int packageLevel)
+ : m_packageLevel(packageLevel)
+ , m_Bfd(m_ObjectGraph, m_PackageGraph, m_symbols)
 {
 }
    
@@ -73,13 +75,14 @@ void Analyser::find_file( const fs::path& dir_path)
          }
          std::string packagename = *p;
          
-         ObjectFile* o = new ObjectFile(m_ObjectGraph, name, m_symbols);
+         Entity* o = m_Bfd.Read(*pos);
+                // new ObjectFile(m_ObjectGraph, name, m_symbols);
 
          std::pair<std::set<ObjectPackage>::iterator,bool> status =
               m_PackageSet.insert(ObjectPackage(m_PackageGraph, packagename));
 
          ObjectPackage* op = const_cast<ObjectPackage*>(&(*(status.first)));
-         o->Read(*pos);
+         //o->Read(*pos);
          o->SetParent(*op);
          m_ObjectFiles.push_back(o);
       }

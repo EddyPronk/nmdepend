@@ -24,6 +24,7 @@
 #include "Callback.h"
 #include "ObjectPackage.h"
 #include "ObjectFile.h"
+#include "Bfd.h"
 
 namespace fs = boost::filesystem;
 using namespace std;
@@ -74,6 +75,7 @@ public:
    void WritePackageGraph(std::ostream& out);
    
 private:
+   Bfd m_Bfd;
    filelist_t list;
    SymbolStore m_symbols;
    Graph m_ObjectGraph;
