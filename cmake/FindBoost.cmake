@@ -1,5 +1,5 @@
 FIND_PATH(Boost_ROOT_DIR include/boost-1_32/boost/utility.hpp 
-		    $ENV{Boost_ROOT_DIR} 
+		    ${Boost_ROOT_DIR} 
 		    /usr/include
 		    /usr/local/include
 		    /opt

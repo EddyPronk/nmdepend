@@ -1,5 +1,5 @@
 FIND_PATH(CommonC++_ROOT_DIR include/cc++2/cc++/config.h 
-			$ENV{CommonCpp_ROOT_DIR})
+			${CommonCpp_ROOT_DIR})
 
 SET(CommonC++_INCLUDE_DIR ${CommonC++_ROOT_DIR}/include/cc++2) 
 
