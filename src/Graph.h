@@ -30,16 +30,31 @@
 
 class ObjectFile;
 
-class Graph : public Callback<ObjectFile>
+template<class T>
+class Graph : public Callback<T>
 {
 public:
   typedef boost::adjacency_list<> type;
 
-  void init(const std::vector<ObjectFile*>& v);
-  virtual void operator()(ObjectFile& from,ObjectFile& to);
-  type& get();
+  void init(const std::vector<T*>& v)
+  { 
+    int size = v.size();
+    for(int i = 0; i < size; ++i)
+    {
+      m_Indexes[v[i]] = i;
+    }
+  }
+  virtual void operator()(T& from, T& to)
+  {
+    add_edge(m_Indexes[&from], m_Indexes[&to], m_Graph);
+  }
+  type& get()
+  {
+    return m_Graph;
+  }
+  
 private:  
-  std::map<ObjectFile*, int> m_Indexes;
+  std::map<T*, int> m_Indexes;
   type m_Graph;
 };
 

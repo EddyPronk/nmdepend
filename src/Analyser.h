@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <iostream>
+#include <algorithm>
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
 #include "Graph.h"
@@ -36,17 +37,29 @@ public:
   typedef std::pair<Ptr, Ptr> pair;
   virtual void operator()(T& from,T& to)
   {
+    cout << from << " -> " << to << endl;
   }
 };
 
+template<class T>
 struct wrapper
 {
-  wrapper(vector<ObjectFile*>& v) : m_v(v) {}
+  wrapper(vector<T*>& v) : m_v(v) {}
   const string& operator[](int i) const
   {
     return m_v[i]->Name();
   }
-  const vector<ObjectFile*>& m_v;
+  const vector<T*>& m_v;
+};
+
+struct sample_graph_writer
+{
+  void operator()(std::ostream& out) const
+  {
+    out << "graph [bgcolor=lightgrey]" << std::endl;
+    out << "node [shape=circle color=white]" << std::endl;
+    out << "edge [style=dashed]" << std::endl;
+  }
 };
 
 class Analyser
@@ -83,6 +96,7 @@ public:
 
    void ReadObjects()
    {
+       // temporary
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
       {
          //todo define packages as collection of object files
@@ -105,10 +119,16 @@ public:
          o->SetParent(*op);
          m_ObjectFiles.push_back(o);
       }
+      
+      for(std::set<ObjectPackage>::iterator i = packages.begin(); i != packages.end(); ++i)
+      {
+        m_packages.push_back(const_cast<ObjectPackage*>(&(*i)));
+      }
    }
    void Link()
    {
       m_Graph.init(m_ObjectFiles);
+      m_Graph2.init(m_packages);
       for (std::vector<ObjectFile*>::iterator pos = m_ObjectFiles.begin();
       pos != m_ObjectFiles.end();
       ++pos)
@@ -116,16 +136,24 @@ public:
          std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
       }
-      wrapper w(m_ObjectFiles);
+
+      wrapper<ObjectFile> w(m_ObjectFiles);
+      boost::default_writer def;
+      sample_graph_writer sample;
       boost::write_graphviz(cout, m_Graph.get(),
-        boost::make_label_writer(w));
+        boost::make_label_writer(w), def, sample);
+
+      wrapper<ObjectPackage> w2(m_packages);
+      boost::write_graphviz(cout, m_Graph2.get(),
+        boost::make_label_writer(w2));
    }
    
 private:
    filelist_t list;
    SymbolStore m_symbols;
-   Graph m_Graph;
-   CallBackDummy<ObjectPackage> m_Graph2;
+   Graph<ObjectFile> m_Graph;
+   Graph<ObjectPackage> m_Graph2;
    std::set<ObjectPackage> packages;
+   std::vector<ObjectPackage*> m_packages;
    std::vector<ObjectFile*> m_ObjectFiles;
 };
