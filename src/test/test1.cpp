@@ -9,7 +9,7 @@
 //#include "Dependency.h"
 
 #include "ObjectFile.h"
-#include "Package.h"
+#include "ObjectPackage.h"
 
 //#include "bfd.h"
 //#include "../binutils/binutils-20040312-1-modified/include/libiberty.h"
@@ -38,7 +38,7 @@ int main(void)
 
    Symbol::SymbolIndex_t symbolIndex;
 
-   Package aa("aa"); // superpackage of a
+   ObjectPackage aa("aa"); // superpackage of a
    ObjectFile a("a.obj", symbolIndex);
    a.SetParent(aa);
 
@@ -52,7 +52,7 @@ int main(void)
 
    std::cout << "step 2" << std::endl;
 
-   Package bb("bb"); // superpackage of a
+   ObjectPackage bb("bb"); // superpackage of a
    ObjectFile b("b.obj", symbolIndex);
    b.SetParent(bb);
    b.AddExportSymbol("a");
