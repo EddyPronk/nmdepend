@@ -54,16 +54,19 @@ TARGET_LINK_LIBRARIES(core
 # 	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
-        /usr/lib/libdl.a
-        ${ZLIB_LIBRARIES})
+)
 
 IF(CYGWIN)
   TARGET_LINK_LIBRARIES(core /bin/cygintl-2.dll)
+ELSE(CYGWIN)
+  TARGET_LINK_LIBRARIES(core ${ZLIB_LIBRARIES} /usr/lib/libdl.a)
 ENDIF (CYGWIN)
 
 ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
 TARGET_LINK_LIBRARIES(nmdepend core)
 
-SUBDIRS(test)
+IF(BUILD_TESTING)
+  SUBDIRS(test)
+ENDIF(BUILD_TESTING)
 
 INSTALL_TARGETS(/bin nmdepend)

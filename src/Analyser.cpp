@@ -29,47 +29,10 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-#if 0
-template<class T>
-class CallBackDummy : public Callback<T>
-{
-public:
-  typedef T* Ptr;
-
-  typedef std::pair<Ptr, Ptr> pair;
-  virtual void operator()(T& from,T& to)
-  {
-    cout << from << " -> " << to << endl;
-  }
-};
-
-template<class T>
-struct wrapper
-{
-  wrapper(vector<T*>& v) : m_v(v) {}
-  const string& operator[](int i) const
-  {
-    return m_v[i]->Name();
-  }
-  const vector<T*>& m_v;
-};
-
-struct sample_graph_writer
-{
-  void operator()(std::ostream& out) const
-  {
-    out << "graph [bgcolor=lightgrey]" << std::endl;
-    out << "node [shape=circle color=white]" << std::endl;
-    out << "edge [style=dashed]" << std::endl;
-  }
-};
-#endif
-
 Analyser::Analyser(int packageLevel) : m_packageLevel(packageLevel)
 {
 }
    
-// todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
 void Analyser::find_file( const fs::path& dir_path)
 {
   if ( !fs::exists( dir_path ) )
@@ -98,23 +61,18 @@ void Analyser::find_file( const fs::path& dir_path)
 
    void Analyser::ReadObjects()
    {
-      std::cout << "package level << " << m_packageLevel << std::endl;
-       // temporary
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
       {
-         //todo define m_PackageSet as collection of object files
-         //using config setting
          fs::path::iterator p = pos->end();
-         --p; //file
+         --p;
          std::string name = *p;
-         --p; //directory containing file -> Release or Debug using msvc
+         --p;
          if(m_packageLevel == 2)
          {
            --p;
          }
          std::string packagename = *p;
          
-         cout << pos->string() << endl;
          ObjectFile* o = new ObjectFile(m_ObjectGraph, name, m_symbols);
 
          std::pair<std::set<ObjectPackage>::iterator,bool> status =
