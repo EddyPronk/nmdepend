@@ -146,7 +146,7 @@ int main( int argc, char ** argv )
         ++pos)
    {
       Package::SubPackageList_t list;
-   //   (*pos)->Imports(list);
+      (*pos)->Imports(list);
       for (Package::SubPackageList_t::iterator package = list.begin();
            package != list.end();
            ++package)
@@ -168,7 +168,7 @@ int main( int argc, char ** argv )
         ++pos)
    {
       Package::SubPackageList_t list;
-      //pos->second->Imports(list);
+      pos->second->Imports(list);
       for (Package::SubPackageList_t::iterator package = list.begin();
            package != list.end();
            ++package)
