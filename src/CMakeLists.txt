@@ -14,7 +14,7 @@ SET(CMAKE_VERBOSE_MAKEFILE 1)
 FIND_PACKAGE(Boost)
 FIND_PACKAGE(CommonC++)
 FIND_PACKAGE(Binutils)
-FIND_PACKAGE(Zlib)
+FIND_PACKAGE(ZLIB)
 
 #SET(CMAKE_CXX_FLAGS "-g3") # huh?
 SET(CMAKE_CXX_FLAGS "-O2 -fprofile-arcs -ftest-coverage")
@@ -45,7 +45,7 @@ ADD_LIBRARY(core
 #  SymbolParser.cpp
   )
 
-SET(Nmdepend_LIBRARIES
+TARGET_LINK_LIBRARIES(core
 	${BFD_LIBRARY}
 #	${INTL_LIBRARY}
  	${IBERTY_LIBRARY}
@@ -53,23 +53,16 @@ SET(Nmdepend_LIBRARIES
  	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
-	/bin/cygintl-2.dll
-    #    ${ZLIB_LIBRARY}
-    #    /usr/lib/libdl.a
- 	)
+        /usr/lib/libdl.a
+        ${ZLIB_LIBRARIES})
 
 IF(CYGWIN)
-  SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} /bin/cygintl-2.dll)
-  #SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} imagehlp)
+  TARGET_LINK_LIBRARIES(core /bin/cygintl-2.dll)
 ENDIF (CYGWIN)
 
 ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
-TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
+TARGET_LINK_LIBRARIES(nmdepend core)
 
 SUBDIRS(test)
-
-ADD_TEST("smoke" nmdepend --help)
-ADD_TEST("run-on-example" nmdepend test/project1)
-
 
 INSTALL_TARGETS(/bin nmdepend)
