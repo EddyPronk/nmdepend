@@ -86,6 +86,11 @@ void Package::Imports(SubPackageList_t& list)
    }
 }
 
+void Package::Provides(SubPackageList_t& list)
+{
+   std::cout << "Provides" << std::endl;
+}
+
 void Package::Link()
 {
 }

@@ -21,9 +21,12 @@ public:
    virtual void AddImport(Package* p);
    virtual void AddExport(Package* p);
 
+   virtual void Provides(SubPackageList_t& list);
+
+
    void Link();
 
-private:
+public:
    std::set<Package*> m_Requires;
    std::set<Package*> m_Provides;
 };

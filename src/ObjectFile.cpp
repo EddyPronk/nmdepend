@@ -117,7 +117,8 @@ void ObjectFile::Read(bfd* file)
    void *minisyms;
 
    // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
-   bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
+   //bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
+   bfd_boolean dynamic = 0;
    //struct size_sym *symsizes;
    unsigned int size;
 

@@ -23,6 +23,7 @@ public:
    //Package& Parent();
    void Imports();
    void Imports(SubPackageList_t& list);
+   virtual void Provides(SubPackageList_t& list);
    Name_t& Name();
 
    // todo Rename/remove this

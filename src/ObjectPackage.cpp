@@ -41,3 +41,15 @@ void ObjectPackage::Link()
       (*pos)->Link();
    }
 }
+
+void ObjectPackage::Provides(SubPackageList_t& list)
+{
+   list.clear();
+   for(Index_t::iterator pos = m_Provides.begin()
+      ; pos != m_Provides.end(); ++pos)
+   {
+      list.push_back(*pos);
+      std::cerr << Name() << " xyz " << (*pos)->Name() << std::endl;
+   }
+}
+
