@@ -1,3 +1,5 @@
+int ff;
+
 void f()
 {
 }

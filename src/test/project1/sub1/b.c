@@ -1,5 +1,6 @@
 void b()
 {
-   f();
+   extern int ff;
+   ff = 0;
 }
 
