@@ -16,7 +16,7 @@ FIND_PACKAGE(Binutils)
 FIND_PACKAGE(Zlib)
 
 #SET(CMAKE_CXX_FLAGS "-g3") # huh?
-SET(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(CMAKE_CXX_FLAGS "-O2 -fprofile-arcs -ftest-coverage")
 
 
 IF (CYGWIN)
@@ -50,7 +50,7 @@ SET(Nmdepend_LIBRARIES
  	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
-        ${ZLIB_LIBRARY}
+    #    ${ZLIB_LIBRARY}
     #    /usr/lib/libdl.a
  	)
 
@@ -69,6 +69,8 @@ TARGET_LINK_LIBRARIES(test2 core ${Nmdepend_LIBRARIES})
 
 ADD_EXECUTABLE (test4 test/test4.cpp)
 TARGET_LINK_LIBRARIES(test4 core ${Nmdepend_LIBRARIES})
+
+SUBDIRS(test)
 
 ADD_TEST("smoke" nmdepend --help)
 ADD_TEST("run-on-example" nmdepend ../example)
