@@ -21,16 +21,14 @@ Symbol::Symbol(ObjectFile* o, const std::string& name) : m_Owner(o), m_Name(name
 std::string Symbol::Demangled()
 {
    std::string demangled;
-   const char* p = m_Name.c_str();
 
    demangling_styles style = auto_demangling;
-   if (*p == '_')
+   if (m_Name[0] == '_')
    {
       style = gnu_v3_demangling;
-      ++p;
    }
 
-   if (*p == '?')
+   if (m_Name[0] == '?')
    {
       style = msvc_demangling;
    }
@@ -38,15 +36,17 @@ std::string Symbol::Demangled()
 #ifdef _MSC_VER
    style = msvc_demangling; // TODO remove
 #endif
-
    cplus_demangle_set_style (style);
-   char* res = cplus_demangle (p, DMGL_ANSI | DMGL_PARAMS);
-
+   
+   char* res = cplus_demangle (m_Name.c_str(), DMGL_ANSI | DMGL_PARAMS);
+ 
    if (res != 0)
    {
       demangled = res;
    }
-
+   
+   free(res);
+   
    return demangled;
 }
 
