@@ -25,11 +25,6 @@
 #include <iostream>
 
 #include "boost/filesystem/path.hpp"
-
-//#include <boost/filesystem/path.hpp>
-//#include <boost/filesystem/fstream.hpp>
-#include "boost/shared_ptr.hpp"
-
 #include "Entity.h"
 #include "Package.h"
 #include "Symbol.h"

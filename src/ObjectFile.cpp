@@ -40,14 +40,7 @@ void ObjectFile::AddExportSymbol(const std::string& name)
 {
   SymbolPtr p = m_SymbolStore.Add(name);
   Symbol& sym = *p; 
-  if(!sym.foundOwner())
-  {
-    sym.setOwner(this);
-  }
-  else
-  {
-    // Symbol already defined by ...
-  }
+  sym.setOwner(this);
   m_SymExports.insert(p);
 }
 
@@ -67,7 +60,7 @@ void ObjectFile::Link()
     const SymbolPtr r = *pos;
     const std::string& s = r->Name();
     
-    ObjectFile* owner = r->m_Owner;
+    ObjectFile* owner = r->Owner();
     if(owner)
     {
       if (owner != this)
@@ -76,9 +69,6 @@ void ObjectFile::Link()
         assert(Parent());
         Parent()->Link(*owner->Parent());
       }
-    }
-    else
-    {
     }
   }
 }
@@ -99,24 +89,20 @@ void ObjectFile::Read(bfd* file)
   // Might be useful for analysing libraries.
   //std::cout << "file " << bfd_get_filename (file) << std::endl;
 
-  void *minisyms = NULL;
 
   // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
   //bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
   bfd_boolean dynamic = 0;
-  //struct size_sym *symsizes;
-  unsigned int size;
+  unsigned int size = 0;
+  void *minisyms = NULL;
 
   long symcount = bfd_read_minisymbols (file, dynamic, &minisyms, &size);
 
-  asymbol *store;
-  bfd_byte *from, *fromend;
-
-  store = bfd_make_empty_symbol (file);
+  asymbol* store = bfd_make_empty_symbol (file);
   assert(store);
 
-  from = (bfd_byte *) minisyms;
-  fromend = from + symcount * size;
+  bfd_byte* from = static_cast<bfd_byte*>(minisyms);
+  bfd_byte* fromend = from + symcount * size;
   for (; from < fromend; from += size)
   {
     asymbol* sym = bfd_minisymbol_to_symbol (file, dynamic, from, store);

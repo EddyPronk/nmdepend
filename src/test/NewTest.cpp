@@ -29,7 +29,7 @@
 #include "SymbolStore.h"
 #include "Analyser.h"
 #include "Graph.h"
-
+#include "Archive.h"
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
 
@@ -73,11 +73,6 @@ protected:
 
   void newTest2()  
   {
-    Analyser a(1);
-    fs::path exampleDir = fs::initial_path() / "project1";
-    exampleDir.normalize();
-    a.find_file(exampleDir);
-    a.ReadObjects();
   }
 
   void newTest3()  

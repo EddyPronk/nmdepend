@@ -16,17 +16,8 @@
 // along with Nmdepend; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifdef _MSC_VER
-#pragma warning( disable : 4786)
-#endif
-
 #include <iostream>
 #include "Symbol.h"
-
-
-//!Symbol::Symbol(ObjectFile* obj, const std::string& name) : m_Owner(obj), m_Name(name)
-//{
-//}
 
 Symbol::Symbol(const std::string& name) : m_Owner(0), m_Name(name)
 {
@@ -42,13 +33,20 @@ bool Symbol::operator < (const Symbol& rhs) const
   return m_Name < rhs.m_Name;
 }
 
- bool Symbol::foundOwner() const
- {
-   return m_Owner != 0;
- }
+bool Symbol::foundOwner() const
+{
+  return m_Owner != 0;
+}
  
- void Symbol::setOwner(ObjectFile* obj)
- {
-   m_Owner = obj;
- }
+void Symbol::setOwner(ObjectFile* obj)
+{
+  m_Owner = obj;
+}
+
+ObjectFile* Symbol::Owner() const
+{
+  return m_Owner;
+}
+
+
  

@@ -42,14 +42,10 @@ public:
    bool operator < (const Symbol& rhs) const;
    bool foundOwner() const;
    void setOwner(ObjectFile* o);
-   
+   ObjectFile* Owner() const;   
+private:
    ObjectFile* m_Owner;
-
-public:
    std::string m_Name;
-
-   // Package exporting the symbol
-   //std::set<Package*> m_Referenced;
 };
 
 #endif
