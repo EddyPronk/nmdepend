@@ -90,14 +90,17 @@ protected:
   void linkTwoObjects()  
   {
     SymbolStore store;
-    Mock<ObjectPackage> objectPackageCallback;
-    Mock<ObjectFile> objectFileCallback;
-    Mock<Package> packageCallback;
+    Mock<ObjectFile> g1;
+    Mock<ObjectPackage> g2;
+    Mock<Package> g3;
+    Mock<Package> g4;
 
-    Package aaa(packageCallback, "aaa");
-    ObjectPackage aa(objectPackageCallback, "aa"); // superpackage of a
+    Package aaaa(g4, "aaaa");
+    Package aaa(g3, "aaa");
+    aaa.SetParent(aaaa);
+    ObjectPackage aa(g2, "aa"); // superpackage of a
     aa.SetParent(aaa);
-    ObjectFile a(objectFileCallback, "a.obj", store);
+    ObjectFile a(g1, "a.obj", store);
     a.SetParent(aa);
 
     a.AddImportSymbol("b");
@@ -105,10 +108,12 @@ protected:
     a.AddImportSymbol("c");
     a.AddImportSymbol("d");
 
-    Package bbb(packageCallback, "bbb");
-    ObjectPackage bb(objectPackageCallback, "bb"); // superpackage of b
+    Package bbbb(g4, "bbbb");
+    Package bbb(g3, "bbb");
+    bbb.SetParent(bbbb);
+    ObjectPackage bb(g2, "bb"); // superpackage of b
     bb.SetParent(bbb);
-    ObjectFile b(objectFileCallback, "b.obj", store);
+    ObjectFile b(g1, "b.obj", store);
     b.SetParent(bb);
 
     b.AddExportSymbol("a");
@@ -123,9 +128,10 @@ protected:
     a.Link();
     b.Link();
 
-    objectFileCallback.test(a,b);
-    objectPackageCallback.test(aa,bb);
-    packageCallback.test(aaa,bbb);
+    g1.test(a,b);
+    g2.test(aa,bb);
+    g3(aaa,bbb);
+    g4(aaaa,bbbb);
     
     std::set<SymbolPtr> inter;
 
