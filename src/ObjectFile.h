@@ -15,6 +15,7 @@
 #include "Package.h"
 #include "Symbol.h"
 
+class bfd;
 class Symbol;
 
 class ObjectFile : public Package
@@ -25,6 +26,7 @@ public:
   ObjectFile(const Package::Name_t& name, Symbol::SymbolIndex_t& symbolIndex);
 
   void Read(const boost::filesystem::path& objectfile);
+  void Read(bfd* file);
   void AddImportSymbol(const std::string& name);
   void AddExportSymbol(const std::string& name);
 

@@ -42,6 +42,7 @@ public:
    virtual void AddProvides(Package* p);
    virtual void AddImport(Package* p);
    virtual void AddExport(Package* p);
+   virtual void Link();
 
 private:
 

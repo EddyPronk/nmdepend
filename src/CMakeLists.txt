@@ -26,10 +26,11 @@ ADD_LIBRARY(nmdepend
   Package.h Package.cpp
   ObjectFile.h ObjectFile.cpp
   ObjectPackage.h ObjectPackage.cpp
+  Archive.h Archive.cpp
   Symbol.h Symbol.cpp
 )
 
-ADD_EXECUTABLE (test1 
+ADD_EXECUTABLE (test1
   test/test1.cpp
 )
 
@@ -41,8 +42,12 @@ ENDIF (CYGWIN)
 
 # C:\cygwin\home\nly00711\binutils\binutils-20040312-1-modified
 
-ADD_EXECUTABLE (test2 
+ADD_EXECUTABLE (test2
   test/test2.cpp
+)
+
+ADD_EXECUTABLE (test4
+  test/test4.cpp
 )
 
 IF (CYGWIN)
@@ -59,6 +64,7 @@ ENDIF (CYGWIN)
 
 IF (CYGWIN)
 TARGET_LINK_LIBRARIES(test2 nmdepend bfd intl iberty imagehlp ${Boost_filesystem})
+TARGET_LINK_LIBRARIES(test4 nmdepend bfd intl iberty imagehlp ${Boost_filesystem})
 ELSE (CYGWIN)
 TARGET_LINK_LIBRARIES(test2 nmdepend bfd iberty ${Boost_filesystem})
 ENDIF (CYGWIN)

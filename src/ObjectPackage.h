@@ -21,6 +21,7 @@ public:
    virtual void AddImport(Package* p);
    virtual void AddExport(Package* p);
 
+   void Link();
 
 private:
    std::set<Package*> m_Requires;

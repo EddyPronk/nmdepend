@@ -33,3 +33,11 @@ void ObjectPackage::AddExport(Package* p)
       Package::AddExport(p);
 }
 
+void ObjectPackage::Link()
+{
+   for(std::set<Package*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
+   {
+      std::cout << "ObjectPackage::Link " << (*pos)->Name() << std::endl;
+      (*pos)->Link();
+   }
+}

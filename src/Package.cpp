@@ -86,3 +86,6 @@ void Package::Imports(SubPackageList_t& list)
    }
 }
 
+void Package::Link()
+{
+}
