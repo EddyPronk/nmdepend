@@ -3,10 +3,16 @@
 
 INCLUDE (${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
 
+SET(CMAKE_MODULE_PATH /home/nmdepend/cmake)
+
 SET(INCLUDES "")
 CHECK_INCLUDE_FILES("${INCLUDES};bfd.h" HAVE_BFD_H)
 SET(CMAKE_VERBOSE_MAKEFILE 1)
 
+#INCLUDE(../cmake/FindBinutils.cmake)
+FIND_PACKAGE(Boost)
+FIND_PACKAGE(CommonC++)
+FIND_PACKAGE(Binutils)
 
 SET(CMAKE_CXX_FLAGS "-g3") # huh?
 
@@ -15,18 +21,12 @@ IF (CYGWIN)
 #  SET (CMAKE_EXE_LINKER_FLAGS "-mwindows -e _mainCRTStartup")
 ENDIF (CYGWIN)
 
-IF (CYGWIN)
 INCLUDE_DIRECTORIES(
-  ${CMAKE_SOURCE_DIR}/src
-  /cygdrive/c/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0
-  /usr/local/include/cc++2
+	${CMAKE_SOURCE_DIR}/src
+      	${Boost_INCLUDE_DIR}
+      	${CommonC++_INCLUDE_DIR}
+	${Binutils_INCLUDE_DIR}
 )
-ELSE (CYGWIN)
-  INCLUDE_DIRECTORIES( /home/rutger/nmdepend/src /usr/include/boost
-  )
-ENDIF (CYGWIN)
-
-#LINK_DIRECTORIES( C:/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0/stage/lib )
 
 ADD_LIBRARY(core
   Entity.h Entity.cpp
@@ -37,64 +37,30 @@ ADD_LIBRARY(core
   Symbol.h Symbol.cpp
 )
 
-ADD_EXECUTABLE (nmdepend
-  Nmdepend.cpp
-  #cmdlineopt.cpp
-)
-
-FIND_LIBRARY(ccext2
-  ccext2
-  /usr/lib
-  /usr/local/lib
-  )
-
-FIND_LIBRARY(ccgnu2
-  ccgnu2
-  /usr/lib
-  /usr/local/lib
-  )
-
-TARGET_LINK_LIBRARIES(nmdepend core bfd intl iberty imagehlp
-${ccgnu2} ${ccext2} ${Boost_filesystem})
-
-
-ADD_EXECUTABLE (test1
-  test/test1.cpp
-)
+SET(Nmdepend_LIBRARIES
+	${BFD_LIBRARY}
+	${INTL_LIBRARY}
+ 	${IBERTY_LIBRARY}
+ 	${Boost_Filesystem_LIBRARY}
+ 	${Boost_Regex_LIBRARY}
+	${CommonC++_ccext2_LIBRARY}
+	${CommonC++_ccgnu2_LIBRARY}
+ 	)
 
 IF (CYGWIN)
-TARGET_LINK_LIBRARIES(test1 core bfd intl iberty imagehlp)
-ELSE (CYGWIN)
-TARGET_LINK_LIBRARIES(test1 core bfd iberty)
+	SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} imagehlp)
 ENDIF (CYGWIN)
 
-# C:\cygwin\home\nly00711\binutils\binutils-20040312-1-modified
+ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
+TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
 
-ADD_EXECUTABLE (test2
-  test/test2.cpp
-)
+ADD_EXECUTABLE (test1 test/test1.cpp)
+TARGET_LINK_LIBRARIES(test1 core ${Nmdepend_LIBRARIES})
 
-ADD_EXECUTABLE (test4
-  test/test4.cpp
-)
+ADD_EXECUTABLE (test2 test/test2.cpp)
+TARGET_LINK_LIBRARIES(test2 core ${Nmdepend_LIBRARIES})
 
-IF (CYGWIN)
-FIND_LIBRARY(Boost_filesystem
-  boost_filesystem-gcc-1_31
-  /cygdrive/c/Data/Ccm63/Ccm_wa/boost~1.31.0-1/boost/boost_1_31_0/stage/lib
-  )
-ELSE (CYGWIN)
-FIND_LIBRARY(Boost_filesystem
-  boost_filesystem
-  /usr/lib
-  )
-ENDIF (CYGWIN)
-
-IF (CYGWIN)
-TARGET_LINK_LIBRARIES(test2 core bfd intl iberty imagehlp ${Boost_filesystem})
-TARGET_LINK_LIBRARIES(test4 core bfd intl iberty imagehlp ${Boost_filesystem})
-ELSE (CYGWIN)
-TARGET_LINK_LIBRARIES(test2 core bfd iberty ${Boost_filesystem})
-ENDIF (CYGWIN)
+ADD_EXECUTABLE (test4 test/test4.cpp)
+TARGET_LINK_LIBRARIES(test4 core ${Nmdepend_LIBRARIES})
 
 INSTALL_TARGETS(/bin nmdepend)
