@@ -9,6 +9,7 @@ ENABLE_TESTING()
 
 #OPTION(BUILD_SHARED_LIBS "Build with shared libraries." ON)
 OPTION(BUILD_TESTING "Build the testing tree." ON)
+OPTION(COVERAGE "Coverage" OFF)
 #OPTION(CMAKE_VERBOSE_MAKEFILE "Verbose Makefile" OFF)
 
 INCLUDE(local.cmake)
