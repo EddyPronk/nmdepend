@@ -17,8 +17,9 @@ FIND_PACKAGE(Binutils)
 SET(CMAKE_CXX_FLAGS "-g3") # huh?
 
 IF (CYGWIN)
-  SET (CMAKE_CXX_FLAGS "-DBOOST_POSIX")
+  SET (CMAKE_CXX_FLAGS "-DBOOST_POSIX ")
 #  SET (CMAKE_EXE_LINKER_FLAGS "-mwindows -e _mainCRTStartup")
+#  SET (CMAKE_EXE_LINKER_FLAGS "-mno-cygwin")
 ENDIF (CYGWIN)
 
 INCLUDE_DIRECTORIES(
@@ -35,7 +36,8 @@ ADD_LIBRARY(core
   ObjectPackage.h ObjectPackage.cpp
   Archive.h Archive.cpp
   Symbol.h Symbol.cpp
-)
+  SymbolParser.h SymbolParser.cpp
+  )
 
 SET(Nmdepend_LIBRARIES
 	${BFD_LIBRARY}
