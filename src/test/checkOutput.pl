@@ -11,7 +11,7 @@ print "running nmdepend on directory : $bindir\n";
 unlink("object.dot");
 unlink("package.dot");
 
-$cmd = "../nmdepend -l$packageLevel $bindir";
+$cmd = "../nmdepend -n$packageLevel $bindir";
 print "cmd : $cmd\n";
 system($cmd);
 $rc = system("diff $expected/package.dot.expected package.dot");

@@ -17,6 +17,7 @@ public:
 //  Bfd(Callback&, const std::string& name, SymbolStore& store);i
   Bfd(Factory&);
   Entity* Read(const boost::filesystem::path& objectfile, int packageLevel);
+  Entity* ReadPackage(const boost::filesystem::path& objectfile, int packageLevel);
 private:
   Factory& m_Factory;
 };

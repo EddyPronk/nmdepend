@@ -31,7 +31,29 @@ Analyser::Analyser(int packageLevel)
  , m_packageLevel(packageLevel)
 {
 }
-   
+
+void Analyser::Add(const std::vector<string>& files)
+{
+  for(vector<string>::const_iterator pos = files.begin() ;
+      pos != files.end(); ++pos)
+  {
+    fs::path path(*pos);
+    find_file(path);
+  }
+}
+
+void Analyser::AddPackages(const std::vector<string>& packages)
+{
+  for(vector<string>::const_iterator pos = packages.begin() ;
+      pos != packages.end(); ++pos)
+  {
+    cout << "add " << *pos << endl;
+
+    fs::path path(*pos);
+    Entity* o = m_Bfd.ReadPackage(*pos, m_packageLevel);
+  }
+}
+  
 void Analyser::find_file( const fs::path& dir_path)
 {
   if ( !fs::exists( dir_path ) )

@@ -61,3 +61,41 @@ Entity* Bfd::Read(const boost::filesystem::path& path, int packageLevel)
 
   return object;
 }
+
+Entity* Bfd::ReadPackage(const boost::filesystem::path& path, int packageLevel)
+{
+  char *target = 0;
+  bfd* file = bfd_openr (path.string().c_str(), target);
+  assert(file);
+
+  Entity* object = NULL;
+
+  fs::path::iterator p = path.end();
+  --p;
+  std::string name = *p;
+ 
+  if (bfd_check_format (file, bfd_object))
+  {
+    throw;
+  }
+
+  if (bfd_check_format (file, bfd_archive))
+  {
+    ObjectPackage* package = m_Factory.CreatePackage(name);
+    object = package;
+    bfd *arfile = 0;
+
+    std::cout << "file " << bfd_get_filename (file) << std::endl;
+
+    ObjectFile* o = m_Factory.CreateObject(name);
+    while((arfile = bfd_openr_next_archived_file (file, arfile)))
+    {
+      o->SetParent(*package);
+      o->Read(arfile);
+      std::cout << "file " << bfd_get_filename (arfile) << std::endl;
+    }
+  }
+
+  return object;
+}
+

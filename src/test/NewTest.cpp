@@ -18,9 +18,6 @@
 
 #include <iostream>
 #include <cppunit/extensions/HelperMacros.h>
-
-#include <cc++/common.h>
-
 #include "ObjectFile.h"
 #include "ObjectPackage.h"
 #include "SymbolStore.h"

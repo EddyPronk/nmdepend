@@ -70,6 +70,8 @@ public:
    
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
    void find_file( const fs::path& dir_path);
+   void Add(const std::vector<string>& files);
+   void AddPackages(const std::vector<string>& packages);
    void ReadObjects();
    void Link();
    void WriteObjectGraph(std::ostream& out);
