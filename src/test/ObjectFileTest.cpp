@@ -7,6 +7,11 @@
 #include "ObjectFile.h"
 #include "SymbolStore.h"
 
+#include "boost/filesystem/operations.hpp"
+#include "boost/filesystem/path.hpp"
+
+namespace fs = boost::filesystem;
+
 #include <boost/ref.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>
@@ -29,7 +34,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( ObjectFileTest );
 using namespace std;
 
 template<class T>
-class Mock : public Callback<T>
+class CallBackStub : public Callback<T>
 {
 public:
   typedef T* Ptr;
@@ -56,21 +61,16 @@ class ObjectFileTest : public CPPUNIT_NS::TestFixture
   CPPUNIT_TEST_SUITE( ObjectFileTest );
   CPPUNIT_TEST( testSymbolStore );
   CPPUNIT_TEST( linkTwoObjects );
+  CPPUNIT_TEST( testRead );
   CPPUNIT_TEST_SUITE_END();
-
-protected:
-  double m_value1;
-  double m_value2;
 
 public:
   void setUp()
   {
-    m_value1 = 2.0;
-    m_value2 = 3.0;
   }
 
 protected:
-
+  
   void testSymbolStore()  
   {
     SymbolStore f;
@@ -90,10 +90,10 @@ protected:
   void linkTwoObjects()  
   {
     SymbolStore store;
-    Mock<ObjectFile> g1;
-    Mock<ObjectPackage> g2;
-    Mock<Package> g3;
-    Mock<Package> g4;
+    CallBackStub<ObjectFile> g1;
+    CallBackStub<ObjectPackage> g2;
+    CallBackStub<Package> g3;
+    CallBackStub<Package> g4;
 
     Package aaaa(g4, "aaaa");
     Package aaa(g3, "aaa");
@@ -140,5 +140,24 @@ protected:
     CPPUNIT_ASSERT(a.Depend(b));
     //CPPUNIT_ASSERT(aa.Depend(bb));
     CPPUNIT_ASSERT(aaa.Depend(bbb));
+  }
+
+  void testRead()
+  {
+    SymbolStore store;
+    CallBackStub<ObjectFile> g1;
+
+    ObjectFile b(g1, "b.obj", store);
+    CPPUNIT_ASSERT_EQUAL(string("b.obj"), b.Name());
+    fs::path fileName = fs::initial_path() / "../../example/sub1/b.o";
+    fileName.normalize();
+    b.Read(fileName);
+
+    ObjectFile f(g1, "f.obj", store);
+    fileName = fs::initial_path() / "../../example/sub2/f.o";
+    fileName.normalize();
+    CPPUNIT_ASSERT(!b.Depend(f));
+    f.Read(fileName);
+    CPPUNIT_ASSERT(b.Depend(f));
   }
 };

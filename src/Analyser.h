@@ -19,14 +19,43 @@
 #include <iostream>
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
+#include "Graph.h"
 #include "Callback.h"
+#include "ObjectPackage.h"
+#include "ObjectFile.h"
 
 namespace fs = boost::filesystem;
 using namespace std;
 
+template<class T>
+class CallBackDummy : public Callback<T>
+{
+public:
+  typedef T* Ptr;
+
+  typedef std::pair<Ptr, Ptr> pair;
+  virtual void operator()(T& from,T& to)
+  {
+  }
+};
+
+struct wrapper
+{
+  wrapper(vector<ObjectFile*>& v) : m_v(v) {}
+  const string& operator[](int i) const
+  {
+    return m_v[i]->Name();
+  }
+  const vector<ObjectFile*>& m_v;
+};
+
 class Analyser
 {
 public:
+   Analyser() : m_dummypackage(m_Graph2, "dummy")
+   {
+   }
+   
    typedef std::vector<fs::path> filelist_t;
 
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
@@ -69,20 +98,31 @@ public:
          //--p; // 1 level higher for visual studio
          std::string packagename = *p;
          
-         cout << packagename << " " << name << endl;
+         cout << pos->string() << endl;
+         ObjectFile* o = new ObjectFile(m_Graph, name, m_symbols);
+         o->Read(*pos);
+         o->SetParent(m_dummypackage);
+         m_ObjectFiles.push_back(o);
       }
    }
+   void Link()
+   {
+      m_Graph.init(m_ObjectFiles);
+      for (std::vector<ObjectFile*>::iterator pos = m_ObjectFiles.begin();
+      pos != m_ObjectFiles.end();
+      ++pos)
+      {
+         std::cout << "linking obj " << (*pos)->Name() << std::endl;
+         (*pos)->Link();
+      }
+   }
+   
 private:
+   ObjectPackage m_dummypackage;
    filelist_t list;
    SymbolStore m_symbols;
+   Graph m_Graph;
+   CallBackDummy<ObjectPackage> m_Graph2;
    
-   //why use vectors of pointers and not vectors of objects?
-   //this uses two indirections instead of one;
-   //todo change to object container instead of pointer to object container
-   typedef std::vector<ObjectFile*> ObjectList_t;
-   typedef std::vector<Package*> PackageList_t;
-   
-   ObjectList_t objectList;
-   PackageList_t packageList;
-   Package::PackageRegistry_t packages;
+   std::vector<ObjectFile*> m_ObjectFiles;
 };

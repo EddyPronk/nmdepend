@@ -16,12 +16,9 @@
 // along with Nmdepend; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#ifdef _MSC_VER
-#pragma warning( disable : 4786)
-#endif
-
-#include "ObjectPackage.h"
+#include <cassert>
 #include <iostream>
+#include "ObjectPackage.h"
 
 ObjectPackage::ObjectPackage(Callback<ObjectPackage>& callback, const std::string& name)
  : Entity(name)
@@ -57,7 +54,7 @@ void ObjectPackage::AddExport(Package* p)
 
 void ObjectPackage::Link()
 {
-   for(std::set<ObjectFile*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
+//!   for(std::set<ObjectFile*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
    {
       //std::cout << "ObjectPackage::Link " << (*pos)->Name() << std::endl;
       //(*pos)->Link();
@@ -80,6 +77,7 @@ void ObjectPackage::Provides(SubPackageList_t& list)
 void ObjectPackage::Link(ObjectPackage& rsh)
 {
   m_Callback(*this, rsh);
+  assert(Parent());
   Parent()->Link(rsh.Parent());
 }
 

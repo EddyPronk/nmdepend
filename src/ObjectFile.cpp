@@ -20,10 +20,13 @@
 #pragma warning( disable : 4786)
 #endif
 
+#include <iostream>
+#include <cassert>
 #include "ObjectFile.h"
 #include "Symbol.h"
-
 #include "bfd.h"
+
+using namespace std;
 
 ObjectFile::ObjectFile(Callback<ObjectFile>& callback, const std::string& name, SymbolStore& store)
  : m_Callback(callback)
@@ -74,6 +77,7 @@ void ObjectFile::Link()
       if (owner != this)
       {
         m_Callback(*this, *owner);
+        assert(Parent());
         Parent()->Link(*owner->Parent());
       }
     }
@@ -85,81 +89,55 @@ void ObjectFile::Link()
 
 void ObjectFile::Read(const boost::filesystem::path& objectfile)
 {
-  std::cout << "file (native)" << objectfile.string() << std::endl;
-  bfd *file;
-  //const char* filename = "a.o";
   char *target = 0;
-  file = bfd_openr (objectfile.string().c_str(), target);
-
-  if (file == NULL)
-  {
-    std::cout << "can't open" << std::endl;
-    // bfd_nonfatal (filename);
-    //return 0;
-  }
-
+  bfd* file = bfd_openr (objectfile.string().c_str(), target);
+  assert(file);
   Read(file);
 }
 
 void ObjectFile::Read(bfd* file)
 {
-   if (bfd_check_format (file, bfd_object))
-   {
-     // This is the filename with full path inside the object file.
-     // Might be useful for analysing libraries.
-     std::cout << "file " << bfd_get_filename (file) << std::endl;
-   }
+  assert(bfd_check_format (file, bfd_object));
 
-   long symcount;
-   void *minisyms;
+  // This is the filename with full path inside the object file.
+  // Might be useful for analysing libraries.
+  //std::cout << "file " << bfd_get_filename (file) << std::endl;
 
-   // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
-   //bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
-   bfd_boolean dynamic = 0;
-   //struct size_sym *symsizes;
-   unsigned int size;
+  void *minisyms = NULL;
 
-   symcount = bfd_read_minisymbols (file, dynamic, &minisyms, &size);
+  // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
+  //bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
+  bfd_boolean dynamic = 0;
+  //struct size_sym *symsizes;
+  unsigned int size;
 
-   asymbol *store;
-   bfd_byte *from, *fromend;
+  long symcount = bfd_read_minisymbols (file, dynamic, &minisyms, &size);
 
-   store = bfd_make_empty_symbol (file);
-   if (store == 0)
-   {
-     std::cout << "can't open " << std::endl;
-   }
+  asymbol *store;
+  bfd_byte *from, *fromend;
 
-   from = (bfd_byte *) minisyms;
-   fromend = from + symcount * size;
-   for (; from < fromend; from += size)
-   {
-     asymbol* sym = bfd_minisymbol_to_symbol (file, dynamic, from, store);
-     if (sym == NULL)
-     {
-       std::cout << "can't open" << std::endl;
-     }
+  store = bfd_make_empty_symbol (file);
+  assert(store);
 
-     const char* symname = bfd_asymbol_name (sym);
+  from = (bfd_byte *) minisyms;
+  fromend = from + symcount * size;
+  for (; from < fromend; from += size)
+  {
+    asymbol* sym = bfd_minisymbol_to_symbol (file, dynamic, from, store);
+    assert(sym);
 
-     if (sym == 0)
-     {
-       std::cout << "can't open" << std::endl;
-     }
+    const char* symname = bfd_asymbol_name (sym);
 
-     if (sym->flags == 0)
-     {
-       AddImportSymbol(symname);
-     }
+    if (sym->flags == 0)
+    {
+      AddImportSymbol(symname);
+    }
 
-     if((sym->flags & BSF_FUNCTION) != 0)
-     {
-       AddExportSymbol(symname);
-     }
-
-     //char *res = cplus_demangle (symname, DMGL_ANSI | DMGL_PARAMS);
-     //std::cout << "symname " << sym->flags << " " << symname << std::endl;
-   }
+    if((sym->flags & BSF_FUNCTION) != 0)
+    {
+      AddExportSymbol(symname);
+    }
+  }
 }
 
 bool ObjectFile::Depend(const ObjectFile& o) const

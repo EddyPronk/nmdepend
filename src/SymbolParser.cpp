@@ -60,7 +60,7 @@ struct SymbolGrammer : public grammar<SymbolGrammer>
         void
         operator()(IteratorT first, IteratorT last) const
         {
-            str.assign(first, last);
+//!            str.assign(first, last);
         }
 
         std::string& str;
@@ -70,31 +70,31 @@ struct SymbolGrammer : public grammar<SymbolGrammer>
     struct definition
     {
 
-		definition(SymbolGrammer const&) : thafunc(mystring)
+//!		definition(SymbolGrammer const&) : thafunc(mystring)
         {
-            symbol
+//!            symbol
 				= root_node_d [name]
 				>> inner_node_d['(' >> typelist >> ')']
 				;
 
-			typelist
+//!			typelist
 				= type [my_functor(mystring)]
 				>> !(',' >> typelist)
 					;
 
-			name
+//!			name
 				= identifier
 				>> !( "::" >> identifier)
 				;
 
-			identifier
+//!			identifier
 				= leaf_node_d [ lexeme_d[ 
                     ((alpha_p | '_' | '$') >> *(alnum_p | '_' | '$'))
                     //- (keywords >> anychar_p - (alnum_p | '_' | '$'))
                 ] ]
 				;
 
-			type
+//!			type
 				= template_id
 				|| template_id >> "const&"
 				|| name >> '*'
@@ -102,33 +102,33 @@ struct SymbolGrammer : public grammar<SymbolGrammer>
 				|| name
 				;
 
-			template_id
+//!			template_id
 				= template_name
 				>> '<'
 				>> template_argument_list
 				>> '>'
 				;
 
-			template_argument_list
+//!			template_argument_list
 				= template_argument >> !(',' >> template_argument);
 
-			template_argument
+//!			template_argument
 				= type
 				;
 
-			template_parameter
+//!			template_parameter
 				= type_parameter
 				;
 
-			type_parameter =
+//!			type_parameter =
 				name
 				;
 
-			template_name =
+//!			template_name =
 				name
 				;
 
-			debug();
+//!			debug();
         }
 
         rule<ScannerT, parser_context<>, parser_tag<symbolID> > symbol;
@@ -170,14 +170,14 @@ struct SymbolGrammer : public grammar<SymbolGrammer>
 };
 
 // todo : make this a static member
-static SymbolGrammer s_Grammar;
+//!static SymbolGrammer s_Grammar;
 
- SymbolParser::SymbolParser() : mGrammar(s_Grammar)
+//! SymbolParser::SymbolParser() : mGrammar(s_Grammar)
 {
 }
 
 void SymbolParser::Parse(const std::string& symbol)
 {
-	tree_parse_info<> info = ast_parse(symbol.c_str(), mGrammar, space_p);
-        const bool success = info.full;
+//!	tree_parse_info<> info = ast_parse(symbol.c_str(), mGrammar, space_p);
+//!        const bool success = info.full;
 }

@@ -7,6 +7,7 @@ INCLUDE (${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
 
 SET(INCLUDES "")
 CHECK_INCLUDE_FILES("${INCLUDES};bfd.h" HAVE_BFD_H)
+CHECK_INCLUDE_FILES("${INCLUDES};demangle.h" HAVE_DEMANGLE_H)
 SET(CMAKE_VERBOSE_MAKEFILE 1)
 
 #INCLUDE(../cmake/FindBinutils.cmake)
@@ -40,27 +41,30 @@ ADD_LIBRARY(core
 #  Archive.cpp
   Symbol.cpp
   SymbolStore.cpp
-  SymbolParser.cpp
+  Graph.cpp
+#  SymbolParser.cpp
   )
 
 SET(Nmdepend_LIBRARIES
 	${BFD_LIBRARY}
-	${INTL_LIBRARY}
+#	${INTL_LIBRARY}
  	${IBERTY_LIBRARY}
  	${Boost_Filesystem_LIBRARY}
  	${Boost_Regex_LIBRARY}
 	${CommonC++_ccext2_LIBRARY}
 	${CommonC++_ccgnu2_LIBRARY}
+	/bin/cygintl-2.dll
     #    ${ZLIB_LIBRARY}
     #    /usr/lib/libdl.a
  	)
 
-IF (CYGWIN)
-	SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} imagehlp)
+IF(CYGWIN)
+  SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} /bin/cygintl-2.dll)
+  #SET(Nmdepend_LIBRARIES ${Nmdepend_LIBRARIES} imagehlp)
 ENDIF (CYGWIN)
 
-#ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
-#TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
+ADD_EXECUTABLE(nmdepend Nmdepend.cpp)
+TARGET_LINK_LIBRARIES(nmdepend core ${Nmdepend_LIBRARIES})
 
 SUBDIRS(test)
 

@@ -24,9 +24,9 @@
 #include "Symbol.h"
 
 
-Symbol::Symbol(ObjectFile* obj, const std::string& name) : m_Owner(obj), m_Name(name)
-{
-}
+//!Symbol::Symbol(ObjectFile* obj, const std::string& name) : m_Owner(obj), m_Name(name)
+//{
+//}
 
 Symbol::Symbol(const std::string& name) : m_Owner(0), m_Name(name)
 {

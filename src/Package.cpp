@@ -32,11 +32,11 @@ Package::Package(Callback<Package>& callback, const std::string& name)
 
 std::string Package::Name2()
 {
-   std::string name = Name();
+//!   std::string name = Name();
 
   //todo configure extension
   //in the meantime using rfind(".o") should work for *.obj too
-  return name.substr(0, name.rfind(".o"));
+//!  return name.substr(0, name.rfind(".o"));
 }
 
 /*void Package::SetParent(Package& parent)
@@ -46,40 +46,40 @@ std::string Package::Name2()
 
 void Package::AddImport(Package* p)
 {
-   if (p != this)
+//!   if (p != this)
    {
-      std::cout << "Package::AddImport " << p->Name() << " to " << Name() << std::endl;
-      m_Imports.insert(p);
+//!      std::cout << "Package::AddImport " << p->Name() << " to " << Name() << std::endl;
+//!      m_Imports.insert(p);
    }
 
-   if (m_Parent && p->m_Parent)
+//!   if (m_Parent && p->m_Parent)
    {
-      m_Parent->AddImport(p->m_Parent);
+//!      m_Parent->AddImport(p->m_Parent);
    }
 }
 
 void Package::AddExport(Package* p)
 {
-   if (p != this)
+//!   if (p != this)
    {
-      std::cout << "Package::AddExport " << p->Name() << " to " << Name() << std::endl;
-      m_Exports.insert(p);
+//!      std::cout << "Package::AddExport " << p->Name() << " to " << Name() << std::endl;
+//!      m_Exports.insert(p);
    }
 
-   if (m_Parent && p->m_Parent)
+//!   if (m_Parent && p->m_Parent)
    {
-      m_Parent->AddExport(p->m_Parent);
+//!      m_Parent->AddExport(p->m_Parent);
    }
 }
 
 void Package::Imports(SubPackageList_t& list)
 {
-   list.clear();
-   for(Index_t::iterator pos = m_Imports.begin()
-      ; pos != m_Imports.end(); ++pos)
+//!   list.clear();
+//!   for(Index_t::iterator pos = m_Imports.begin()
+//!      ; pos != m_Imports.end(); ++pos)
    {
-      list.push_back(*pos);
-      std::cout << Name() << " -> " << (*pos)->Name() << std::endl;
+//!      list.push_back(*pos);
+//!      std::cout << Name() << " -> " << (*pos)->Name() << std::endl;
    }
 }
 
