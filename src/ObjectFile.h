@@ -27,13 +27,23 @@ public:
   void Read(const boost::filesystem::path& objectfile);
   void AddImportSymbol(const std::string& name);
   void AddExportSymbol(const std::string& name);
+
+  // Link objects like a real linker does.
   void Link();
+
+  // Experimental operation to play with intersection
   void Boo(ObjectFile& rsh, SymIndex_t& i);
 
 private:
    ObjectFile();
+
+   // List of imported symbols
    SymIndex_t m_SymImports;
+
+   // List of exported symbols.
    SymIndex_t m_SymExports;
+
+   // For looking up in which objectfile a symbol is defined.
    Symbol::SymbolIndex_t& m_SymbolIndex;
 };
 

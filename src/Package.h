@@ -6,6 +6,8 @@
 #include <set>
 #include <map>
 
+// Package does not implement Provides/Requires containers.
+
 class Package
 {
 public:
@@ -18,20 +20,39 @@ public:
    Package(const Name_t& name);
 
    void SetParent(Package& parent);
+   //Package& Parent();
    void Imports();
    void Imports(SubPackageList_t& list);
    Name_t& Name();
+
+   // todo Rename/remove this
    Name_t Name2();
-   void AddImport(Package* p);
-   void AddExport(Package* p);
+
+   // Two types of relationships are being stored.
+   // Import/Export represent dependencies between packages on same level.
+   // Requires/Provides is the same as undefined/defined for objectfiles.
+   // These names are choosen to abstract from objectfiles.
+   //
+   // Import/Export has different semantics as in UML.
+   //
+   //   Provides is a 'has' relationship
+   //   Requires is a list o
+
+   virtual void AddRequires(Package* p);
+   virtual void AddProvides(Package* p);
+   virtual void AddImport(Package* p);
+   virtual void AddExport(Package* p);
 
 private:
-   Index_t m_Contains;
-   Index_t m_Imports;
-   Index_t m_Exports;
 
-   Package* m_Parent;
+   // For storing inter package dependencies
+   std::set<Package*> m_Imports;
+   std::set<Package*> m_Exports;
+
    Name_t m_Name;
+
+protected:
+   Package* m_Parent;
 };
 
 #endif

@@ -69,6 +69,7 @@ void ObjectFile::Link()
         std::string demangled = (*pos)->Demangled();
         if (demangled.find("scalar deleting destructor") == std::string::npos)
         {
+          m_Parent->AddRequires(owner);
           AddImport(owner);
           owner->AddExport(this);
           std::cout << "symbol " << Name() << "::" << demangled << " found in "
@@ -83,8 +84,6 @@ void ObjectFile::Link()
     }
   }
 }
-
-// ??_7GPCTR@NI@@6B@
 
 void ObjectFile::Read(const boost::filesystem::path& objectfile)
 {
@@ -103,6 +102,8 @@ void ObjectFile::Read(const boost::filesystem::path& objectfile)
 
   if (bfd_check_format (file, bfd_object))
   {
+    // This is the filename with full path inside the object file.
+    // Might be useful for analysing libraries.
     std::cout << "file " << bfd_get_filename (file) << std::endl;
   }
 

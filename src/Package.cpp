@@ -26,14 +26,23 @@ Package::Name_t Package::Name2()
 void Package::SetParent(Package& parent)
 {
    m_Parent = &parent;
-   parent.m_Contains.insert(this);
+   parent.AddProvides(this); // todo remove argumement
+   //parent.m_Contains.insert(this);
+}
+
+void Package::AddRequires(Package* p)
+{
+}
+
+void Package::AddProvides(Package* p)
+{
 }
 
 void Package::AddImport(Package* p)
 {
    if (p != this)
    {
-      std::cout << "AddImport " << p->Name() << " to " << Name() << std::endl;
+      std::cout << "Package::AddImport " << p->Name() << " to " << Name() << std::endl;
       m_Imports.insert(p);
    }
 
@@ -47,7 +56,7 @@ void Package::AddExport(Package* p)
 {
    if (p != this)
    {
-      std::cout << "AddExport " << p->Name() << " to " << Name() << std::endl;
+      std::cout << "Package::AddExport " << p->Name() << " to " << Name() << std::endl;
       m_Exports.insert(p);
    }
 

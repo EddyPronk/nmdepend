@@ -31,6 +31,7 @@ ADD_LIBRARY(nmdepend
   Entity.h Entity.cpp
   Package.h Package.cpp
   ObjectFile.h ObjectFile.cpp
+  ObjectPackage.h ObjectPackage.cpp
   Symbol.h Symbol.cpp
 )
 
