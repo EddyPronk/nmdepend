@@ -44,7 +44,6 @@ public:
    void setOwner(ObjectFile* o);
    
    ObjectFile* m_Owner;
-   std::string Demangled() const;
 
 public:
    std::string m_Name;

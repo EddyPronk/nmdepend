@@ -23,13 +23,6 @@
 #include <iostream>
 #include "Symbol.h"
 
-// Macro to deal with const char *typename in demangle.h.
-// Don't use the keyword typename in this file and expect
-// it to work.
-#define typename type_name
-#include "demangle.h"
-#undef typename
-
 
 Symbol::Symbol(ObjectFile* obj, const std::string& name) : m_Owner(obj), m_Name(name)
 {
@@ -42,38 +35,6 @@ Symbol::Symbol(const std::string& name) : m_Owner(0), m_Name(name)
 const std::string& Symbol::Name() const
 {
   return m_Name;
-}
-
-std::string Symbol::Demangled() const
-{
-   std::string demangled;
-
-   demangling_styles style = auto_demangling;
-   if (m_Name[0] == '_')
-   {
-      style = gnu_v3_demangling;
-   }
-
-   if (m_Name[0] == '?')
-   {
-   //   style = msvc_demangling;
-   }
-
-#ifdef _MSC_VER
-   style = msvc_demangling; // TODO remove
-#endif
-   cplus_demangle_set_style (style);
-   
-   char* res = cplus_demangle (m_Name.c_str(), DMGL_ANSI | DMGL_PARAMS);
- 
-   if (res != 0)
-   {
-      demangled = res;
-   }
-   
-   free(res);
-   
-   return demangled;
 }
 
 bool Symbol::operator < (const Symbol& rhs) const

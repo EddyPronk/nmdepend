@@ -75,17 +75,6 @@ void ObjectFile::Link()
       {
         m_Callback(*this, *owner);
         Parent()->Link(*owner->Parent());
-        std::string demangled = r->Demangled();
-        if (demangled.find("scalar deleting destructor") == std::string::npos)
-        {
-//          std::cout << "symbol " << s << "::" << demangled << " found in "
-//                    << owner->Name() << std::endl;
-        }
-        else
-        {
-//          std::cout << "ignored " << s << "::" << demangled << " found in "
-//                    << owner->Name() << std::endl;
-        }
       }
     }
     else
