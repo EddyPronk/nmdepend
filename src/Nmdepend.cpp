@@ -112,7 +112,7 @@ int main( int argc, char ** argv )
  }
  catch(const std::exception& e)
  {
-   std::clog << "exception: " << e.what() << std::endl;
+   std::clog << "exception catched in main : " << e.what() << std::endl;
  }
  catch(...)
  {

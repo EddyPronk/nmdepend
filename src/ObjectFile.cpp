@@ -77,6 +77,7 @@ void ObjectFile::Link()
 void ObjectFile::Read(const boost::filesystem::path& objectfile)
 {
   char *target = 0;
+  cout << objectfile.string() << endl;
   bfd* file = bfd_openr (objectfile.string().c_str(), target);
   assert(file);
   Read(file);

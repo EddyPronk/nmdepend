@@ -8,17 +8,17 @@
 #include "SymbolStore.h"
 #include "Graph.h"
 #include "Callback.h"
+#include "ObjectPackage.h"
+#include "Factory.h"
 
 class Bfd
 {
 public:
 //  Bfd(Callback&, const std::string& name, SymbolStore& store);i
-  Bfd(Callback& object, Callback& package, SymbolStore& store);
+  Bfd(Factory&);
   Entity* Read(const boost::filesystem::path& objectfile);
 private:
-  SymbolStore& m_symbols;
-  Callback& m_ObjectGraph;
-  Callback& m_PackageGraph;
+  Factory& m_Factory;
 };
 
 #endif

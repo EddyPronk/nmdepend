@@ -25,6 +25,7 @@
 #include "ObjectPackage.h"
 #include "ObjectFile.h"
 #include "Bfd.h"
+#include "Factory.h"
 
 namespace fs = boost::filesystem;
 using namespace std;
@@ -76,12 +77,12 @@ public:
    
 private:
    Bfd m_Bfd;
+   Factory m_Factory;
    filelist_t list;
-   SymbolStore m_symbols;
    Graph m_ObjectGraph;
    Graph m_PackageGraph;
-   std::set<ObjectPackage> m_PackageSet;
+   //std::set<ObjectPackage> m_PackageSet;
    std::vector<Entity*> m_Packages;
-   std::vector<Entity*> m_ObjectFiles;
+   //std::vector<Entity*> m_ObjectFiles;
    int m_packageLevel;
 };

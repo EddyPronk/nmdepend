@@ -17,7 +17,7 @@ FIND_PACKAGE(Binutils)
 FIND_PACKAGE(ZLIB)
 
 #SET(CMAKE_CXX_FLAGS "-g3") # huh?
-SET(CMAKE_CXX_FLAGS "-O2 -fprofile-arcs -ftest-coverage")
+SET(CMAKE_CXX_FLAGS "-Wall -W -O2 -fprofile-arcs -ftest-coverage")
 
 
 IF (CYGWIN)
@@ -36,6 +36,7 @@ INCLUDE_DIRECTORIES(
 ADD_LIBRARY(core
   Entity.cpp
   Bfd.cpp
+  Factory.cpp
 #  Package.cpp
   ObjectFile.cpp
   ObjectPackage.cpp

@@ -27,7 +27,8 @@ using namespace std;
 
 Analyser::Analyser(int packageLevel)
  : m_packageLevel(packageLevel)
- , m_Bfd(m_ObjectGraph, m_PackageGraph, m_symbols)
+ , m_Factory(m_ObjectGraph, m_PackageGraph)
+ , m_Bfd(m_Factory)
 {
 }
    
@@ -37,6 +38,9 @@ void Analyser::find_file( const fs::path& dir_path)
   {
     std::cout << "doesn't exist " << dir_path.native_directory_string() << std::endl;
   }
+
+  if ( fs::is_directory( dir_path ))
+  {
 
   fs::directory_iterator end_itr;
   for(fs::directory_iterator itr( dir_path );
@@ -57,6 +61,12 @@ void Analyser::find_file( const fs::path& dir_path)
       }
    }
 
+else
+{
+  list.push_back(dir_path);
+}
+}
+
    void Analyser::ReadObjects()
    {
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
@@ -72,16 +82,14 @@ void Analyser::find_file( const fs::path& dir_path)
          std::string packagename = *p;
          
          Entity* o = m_Bfd.Read(*pos);
+         assert(o);
 
-         std::pair<std::set<ObjectPackage>::iterator,bool> status =
-              m_PackageSet.insert(ObjectPackage(m_PackageGraph, packagename));
-
-         ObjectPackage* op = const_cast<ObjectPackage*>(&(*(status.first)));
+         ObjectPackage* op = m_Factory.CreatePackage(packagename);
+         assert(op);
          o->SetParent(*op);
-         m_ObjectFiles.push_back(o);
       }
       
-      for(std::set<ObjectPackage>::iterator i = m_PackageSet.begin(); i != m_PackageSet.end(); ++i)
+      for(std::set<ObjectPackage>::iterator i = m_Factory.m_PackageSet.begin(); i != m_Factory.m_PackageSet.end(); ++i)
       {
         m_Packages.push_back(const_cast<ObjectPackage*>(&(*i)));
       }
@@ -89,21 +97,21 @@ void Analyser::find_file( const fs::path& dir_path)
 
    void Analyser::Link()
    {
-      m_ObjectGraph.init(m_ObjectFiles);
+      m_ObjectGraph.init(m_Factory.m_ObjectFiles);
       m_PackageGraph.init(m_Packages);
-      for (std::vector<Entity*>::iterator pos = m_ObjectFiles.begin();
-      pos != m_ObjectFiles.end();
+      for (std::vector<Entity*>::iterator pos = m_Factory.m_ObjectFiles.begin();
+      pos != m_Factory.m_ObjectFiles.end();
       ++pos)
       {
          std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
       }
-      m_symbols.Statistics();
+      m_Factory.m_symbols.Statistics();
    }
    
    void Analyser::WriteObjectGraph(std::ostream& out)
    {
-      wrapper<Entity> w(m_ObjectFiles);
+      wrapper<Entity> w(m_Factory.m_ObjectFiles);
       boost::default_writer def;
       sample_graph_writer sample;
       boost::write_graphviz(out, m_ObjectGraph.get(), boost::make_label_writer(w), def, sample);
