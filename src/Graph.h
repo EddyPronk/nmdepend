@@ -30,8 +30,7 @@
 
 class ObjectFile;
 
-template<class T>
-class Graph : public Callback<T>
+class Graph : public Callback
 {
 public:
   typedef boost::adjacency_list<
@@ -44,7 +43,7 @@ public:
   //  boost::disallow_parallel_edge_tag;
 
 
-  void init(const std::vector<T*>& v)
+  void init(const std::vector<Entity*>& v)
   { 
     int size = v.size();
     for(int i = 0; i < size; ++i)
@@ -52,7 +51,7 @@ public:
       m_Indexes[v[i]] = i;
     }
   }
-  virtual void operator()(T& from, T& to)
+  virtual void operator()(Entity& from, Entity& to)
   {
     assert( from.Name() != to.Name() );
     add_edge(m_Indexes[&from], m_Indexes[&to], m_Graph);
@@ -63,7 +62,7 @@ public:
   }
   
 private:  
-  std::map<T*, int> m_Indexes;
+  std::map<Entity*, int> m_Indexes;
   type m_Graph;
 };
 

@@ -26,7 +26,6 @@
 
 #include "boost/filesystem/path.hpp"
 #include "Entity.h"
-#include "Package.h"
 #include "Symbol.h"
 #include "SymbolStore.h"
 #include "ObjectPackage.h"
@@ -34,15 +33,13 @@
 class bfd;
 class Symbol;
 
-class ObjectFile : public Entity, public IParent<ObjectPackage>
+class ObjectFile : public Entity
 {
-  //typedef const Symbol* SymbolPtr;
- 
 public:
   ~ObjectFile() {}
-  typedef std::set<SymbolPtr> SymIndex_t;
+//  typedef std::set<SymbolPtr> SymIndex_t;
 
-  ObjectFile(Callback<ObjectFile>&, const std::string& name, SymbolStore& store);
+  ObjectFile(Callback&, const std::string& name, SymbolStore& store);
 
   void Read(const boost::filesystem::path& objectfile);
   void Read(bfd* file);
@@ -52,12 +49,12 @@ public:
   // Link objects like a real linker does.
   void Link();
 
-  bool Depend(const ObjectFile& o) const;
+  bool Depend(const Entity& o) const;
 
-  void intersection(const ObjectFile& rsh, SymIndex_t& i) const;
+  void intersection(const Entity& rsh, SymIndex_t& i) const;
 
 private:
-   Callback<ObjectFile>& m_Callback;
+   Callback& m_Callback;
 
    // List of imported symbols
    SymIndex_t m_SymImports;

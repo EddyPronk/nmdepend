@@ -24,7 +24,7 @@
 
 using namespace std;
 
-ObjectFile::ObjectFile(Callback<ObjectFile>& callback, const std::string& name, SymbolStore& store)
+ObjectFile::ObjectFile(Callback& callback, const std::string& name, SymbolStore& store)
  : m_Callback(callback)
  , Entity(name)
  , m_SymbolStore(store)
@@ -44,9 +44,10 @@ void ObjectFile::AddExportSymbol(const std::string& name)
   m_SymExports.insert(p);
 }
 
-void ObjectFile::intersection(const ObjectFile& rsh, SymIndex_t& i) const
+void ObjectFile::intersection(const Entity& entity, SymIndex_t& i) const
 {
   i.clear();
+  const ObjectFile& rsh = dynamic_cast<const ObjectFile&>(entity);
   set_intersection (m_SymImports.begin(), m_SymImports.end(),
               rsh.m_SymExports.begin(), rsh.m_SymExports.end(),
               std::inserter(i, i.begin()));
@@ -135,8 +136,9 @@ void ObjectFile::Read(bfd* file)
   }
 }
 
-bool ObjectFile::Depend(const ObjectFile& o) const
+bool ObjectFile::Depend(const Entity& o) const
 {
+cout << __PRETTY_FUNCTION__ << endl;
   SymIndex_t intersect;
   intersection(o, intersect);
 

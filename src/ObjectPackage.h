@@ -23,24 +23,20 @@
 #include <vector>
 #include <set>
 #include <map>
-
-#include "Package.h"
+#include "Entity.h"
 #include "Callback.h"
 
 class ObjectFile;
 
-// Implements Requires/Provides containers.
-
-
-class ObjectPackage : public Entity,  public IParent<Package>
+class ObjectPackage : public Entity
 {
 public:
-   ObjectPackage(Callback<ObjectPackage>&, const std::string& name);
-   virtual void AddImport(Package* p);
-   virtual void AddExport(Package* p);
+   ObjectPackage(Callback&, const std::string& name);
+//   virtual void AddImport(Package* p);
+//   virtual void AddExport(Package* p);
 
-   void Link();
-   void Link(ObjectPackage&);
+//   void Link();
+   void Link(Entity&);
 
    bool operator < (const ObjectPackage& rhs) const
    {
@@ -51,7 +47,7 @@ public:
    std::set<ObjectFile*> m_Requires;
    std::set<ObjectFile*> m_Provides;
 private:
-   Callback<ObjectPackage>& m_Callback;
+   Callback& m_Callback;
 };
 
 #endif

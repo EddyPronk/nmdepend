@@ -28,14 +28,13 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-template<class T>
-class CallBackDummy : public Callback<T>
+class CallBackDummy : public Callback
 {
 public:
-  typedef T* Ptr;
+  typedef Entity* Ptr;
 
   typedef std::pair<Ptr, Ptr> pair;
-  virtual void operator()(T& from,T& to)
+  virtual void operator()(Entity& from, Entity& to)
   {
     cout << from << " -> " << to << endl;
   }
@@ -77,10 +76,10 @@ public:
 private:
    filelist_t list;
    SymbolStore m_symbols;
-   Graph<ObjectFile> m_ObjectGraph;
-   Graph<ObjectPackage> m_PackageGraph;
+   Graph m_ObjectGraph;
+   Graph m_PackageGraph;
    std::set<ObjectPackage> m_PackageSet;
-   std::vector<ObjectPackage*> m_Packages;
-   std::vector<ObjectFile*> m_ObjectFiles;
+   std::vector<Entity*> m_Packages;
+   std::vector<Entity*> m_ObjectFiles;
    int m_packageLevel;
 };

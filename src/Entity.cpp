@@ -18,7 +18,9 @@
 
 #include "Entity.h"
 
-Entity::Entity(const std::string& name) : m_Name(name)
+Entity::Entity(const std::string& name)
+ : m_Name(name)
+ , m_Parent(NULL)
 {
 }
 
@@ -27,4 +29,13 @@ const std::string& Entity::Name() const
    return m_Name;
 }
 
+void Entity::SetParent(Entity& parent)
+{
+  m_Parent = &parent;
+}
+
+Entity* Entity::Parent()
+{
+  return m_Parent;
+}
 

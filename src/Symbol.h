@@ -23,8 +23,6 @@
 #include <set>
 #include <map>
 
-#include "Package.h"
-
 class ObjectFile;
 class Symbol;
 

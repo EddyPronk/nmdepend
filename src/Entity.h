@@ -20,38 +20,29 @@
 #define ENTITY_H
 
 #include <string>
-
-template<class P>
-class IParent
-{
-public:
-  IParent() : m_Parent(NULL)
-  {
-  }
-  
-  void SetParent(P& p)
-  {
-    m_Parent = &p;
-  }
-  P* Parent()
-  {
-    return m_Parent;
-  }
-private:
-  P* m_Parent;
-};
+#include "Symbol.h"
 
 class Entity
 {
 public:
-  Entity(const std::string&);
+  typedef std::set<SymbolPtr> SymIndex_t;
+
+  Entity(const std::string& name);
+  void SetParent(Entity& p);
+  Entity* Parent();
   const std::string& Name() const;
+  virtual void Link() {}
+  virtual void Link(Entity&) {}
+  virtual bool Depend(const Entity&) const { return false; }
+  virtual void intersection(const Entity&, SymIndex_t& i) const {}
+private:
   friend std::ostream& operator<<(std::ostream& out, const Entity& e)
   {
     return out << e.m_Name;
   }
 private:
   std::string m_Name;
+  Entity* m_Parent;
 };
 
 #endif

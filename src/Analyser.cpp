@@ -136,7 +136,7 @@ void Analyser::find_file( const fs::path& dir_path)
    {
       m_ObjectGraph.init(m_ObjectFiles);
       m_PackageGraph.init(m_Packages);
-      for (std::vector<ObjectFile*>::iterator pos = m_ObjectFiles.begin();
+      for (std::vector<Entity*>::iterator pos = m_ObjectFiles.begin();
       pos != m_ObjectFiles.end();
       ++pos)
       {
@@ -148,7 +148,7 @@ void Analyser::find_file( const fs::path& dir_path)
    
    void Analyser::WriteObjectGraph(std::ostream& out)
    {
-      wrapper<ObjectFile> w(m_ObjectFiles);
+      wrapper<Entity> w(m_ObjectFiles);
       boost::default_writer def;
       sample_graph_writer sample;
       boost::write_graphviz(out, m_ObjectGraph.get(), boost::make_label_writer(w), def, sample);
@@ -156,7 +156,7 @@ void Analyser::find_file( const fs::path& dir_path)
    
    void Analyser::WritePackageGraph(std::ostream& out)
    {
-      wrapper<ObjectPackage> w(m_Packages);
+      wrapper<Entity> w(m_Packages);
       boost::default_writer def;
       sample_graph_writer sample;
       boost::write_graphviz(out, m_PackageGraph.get(),

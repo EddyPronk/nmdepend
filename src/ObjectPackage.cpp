@@ -20,7 +20,7 @@
 #include <iostream>
 #include "ObjectPackage.h"
 
-ObjectPackage::ObjectPackage(Callback<ObjectPackage>& callback, const std::string& name)
+ObjectPackage::ObjectPackage(Callback& callback, const std::string& name)
  : Entity(name)
  , m_Callback(callback)
 {
@@ -40,26 +40,26 @@ void ObjectPackage::AddProvides(Package* p)
 }
 #endif
 
-void ObjectPackage::AddImport(Package* p)
-{
+//void ObjectPackage::AddImport(Package* p)
+//{
    //std::cout << "ObjectPackage::AddImport" << std::endl;
    //Package::AddImport(p);
-}
+//}
 
-void ObjectPackage::AddExport(Package* p)
-{
+//void ObjectPackage::AddExport(Package* p)
+//{
    //   std::cout << "ObjectPackage::AddExport" << std::endl;
    //Package::AddExport(p);
-}
+//}
 
-void ObjectPackage::Link()
-{
+//void ObjectPackage::Link()
+//{
 //!   for(std::set<ObjectFile*>::iterator pos = m_Provides.begin(); pos != m_Provides.end(); ++pos)
-   {
+  // {
       //std::cout << "ObjectPackage::Link " << (*pos)->Name() << std::endl;
       //(*pos)->Link();
-   }
-}
+   //}
+//}
 
 #if 0
 void ObjectPackage::Provides(SubPackageList_t& list)
@@ -74,14 +74,14 @@ void ObjectPackage::Provides(SubPackageList_t& list)
 }
 #endif
 
-void ObjectPackage::Link(ObjectPackage& rsh)
+void ObjectPackage::Link(Entity& rsh)
 {
   if (this != &rsh)
   {
     m_Callback(*this, rsh);
     if(Parent())
     {
-      Parent()->Link(rsh.Parent());
+      Parent()->Link(*rsh.Parent());
     }
   }
 }

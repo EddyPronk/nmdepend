@@ -19,11 +19,15 @@
 #ifndef CALLBACK_H
 #define CALLBACK_H
 
-template<class T>
+#include "Entity.h"
+#include <iostream>
+
+using namespace std;
+
 class Callback
 {
 public:
-  virtual void operator()(T&, T&)
+  virtual void operator()(Entity&, Entity&)
   {
     std::cout << "Callback operator()" << std::endl;
   }

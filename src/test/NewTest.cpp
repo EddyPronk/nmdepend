@@ -77,12 +77,12 @@ protected:
 
   void newTest3()  
   {
-    Graph<ObjectFile> g;
+    Graph g;
     SymbolStore store;
     ObjectFile b(g, "b.obj", store);
     ObjectFile f(g, "f.obj", store);
     ObjectFile h(g, "h.obj", store);
-    vector<ObjectFile*> m_ObjectFiles;
+    vector<Entity*> m_ObjectFiles;
     m_ObjectFiles.push_back(&b);
     m_ObjectFiles.push_back(&f);
     m_ObjectFiles.push_back(&h);
@@ -93,7 +93,7 @@ protected:
     g(f,h); // add the same dependency a 2nd time
     g(b,h);
     
-    wrapper<ObjectFile> w(m_ObjectFiles);
+    wrapper<Entity> w(m_ObjectFiles);
     boost::write_graphviz(cout, g.get(),
       boost::make_label_writer(w));
   }
