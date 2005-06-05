@@ -1,6 +1,8 @@
 FIND_LIBRARY(CppUnit_LIBRARY 
   NAMES cppunit 
-  PATHS /usr/local/lib
+  PATHS /usr/lib
+        /usr/local/lib
+       
   ${CppUnit_ROOT_DIR}//lib
   DOC "CppUnit test framework")
   

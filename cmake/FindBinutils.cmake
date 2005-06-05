@@ -9,6 +9,7 @@ SET(Binutils_INCLUDE_DIR ${Binutils_ROOT_DIR}/include)
 FIND_LIBRARY(BFD_LIBRARY 
   NAMES bfd 
   PATHS /usr/lib ${Binutils_BUILD_DIR}/bfd
+        /usr/$ENV{MACHTYPE}/lib
   DOC "Regular expressions. Boost >=1.31 has compiler suffix for library names")
 
 #FIND_LIBRARY(INTL_LIBRARY 
@@ -19,5 +20,6 @@ FIND_LIBRARY(BFD_LIBRARY
 FIND_LIBRARY(IBERTY_LIBRARY
   NAMES iberty 
   PATHS /usr/lib ${Binutils_BUILD_DIR}/libiberty
+        /usr/$ENV{MACHTYPE}/lib
   DOC "Regular expressions. Boost >=1.31 has compiler suffix for library names")
 

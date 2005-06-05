@@ -6,7 +6,7 @@ ENABLE_TESTING()
 #
 # Options
 #
-
+MESSAGE($ENV{MACHTYPE})
 #OPTION(BUILD_SHARED_LIBS "Build with shared libraries." ON)
 OPTION(BUILD_TESTING "Build the testing tree." ON)
 OPTION(COVERAGE "Coverage" OFF)
@@ -16,6 +16,7 @@ INCLUDE(local.cmake)
 
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+FIND_PACKAGE(Boost)
 #
 # Testing
 #
@@ -33,5 +34,5 @@ ENDIF(BUILD_TESTING)
 
 SUBDIRS(
   src
-  depend
+#  depend
   )
