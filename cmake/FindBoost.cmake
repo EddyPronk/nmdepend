@@ -14,6 +14,7 @@ MACRO(BOOST_USE name)
     PATHS ${Boost_ROOT_DIR}/lib
           ${Boost_ROOT_DIR}/stage/lib
 	      /usr/local/lib
+	      /usr/lib
 	)
 
 ENDMACRO(BOOST_USE)
