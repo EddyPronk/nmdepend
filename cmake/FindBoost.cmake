@@ -19,8 +19,6 @@ MACRO(BOOST_USE name)
 
 ENDMACRO(BOOST_USE)
 
-#BOOST_USE(regex)
-
 #SET(Boost_VER 1_31)
 #SET(Boost_INCLUDE_DIR ${Boost_ROOT_DIR}/include/boost-1_32)
 	    

@@ -20,6 +20,7 @@
 #include <algorithm>
 #include "boost/filesystem/operations.hpp"
 #include "boost/filesystem/path.hpp"
+#include "boost/filesystem/convenience.hpp"
 #include "Analyser.h"
 
 namespace fs = boost::filesystem;
@@ -75,7 +76,9 @@ void Analyser::find_file( const fs::path& dir_path)
          }
          else
          {
-            if (itr->leaf().rfind(".o") != std::string::npos)
+         	
+           //if (itr->leaf().rfind(".o") != std::string::npos)
+            if (fs::extension(*itr) == ".o")
             {
                list.push_back(*itr);
             }

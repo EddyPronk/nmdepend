@@ -14,7 +14,7 @@ BOOST_USE(filesystem)
 BOOST_USE(program_options)
 
 
-#SET(CMAKE_CXX_FLAGS "-Wall -W -O2")
+SET(CMAKE_CXX_FLAGS "-Wall -W -O2")
 
 IF(COVERAGE)
  # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")

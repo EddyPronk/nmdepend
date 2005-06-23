@@ -16,8 +16,6 @@ ENDIF(STATIC)
 
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-#FIND_PACKAGE(Boost)
-
 #
 # Testing
 #
