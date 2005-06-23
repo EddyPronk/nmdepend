@@ -1,22 +1,23 @@
-PROJECT(nmdepend)
-
-#SET(CMAKE_VERBOSE_MAKEFILE 1)
-ENABLE_TESTING()
+#PROJECT(nmdepend C++)
 
 #
 # Options
 #
-MESSAGE($ENV{MACHTYPE})
-#OPTION(BUILD_SHARED_LIBS "Build with shared libraries." ON)
+
 OPTION(BUILD_TESTING "Build the testing tree." ON)
-OPTION(COVERAGE "Coverage" OFF)
-#OPTION(CMAKE_VERBOSE_MAKEFILE "Verbose Makefile" OFF)
+OPTION(STATIC "Link nmdepend statically" OFF)
+#OPTION(COVERAGE "Coverage" OFF)
 
 INCLUDE(local.cmake)
 
+IF(STATIC)
+  SET(CMAKE_EXE_LINKER_FLAGS "-static")
+ENDIF(STATIC)
+
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-FIND_PACKAGE(Boost)
+#FIND_PACKAGE(Boost)
+
 #
 # Testing
 #
@@ -34,5 +35,5 @@ ENDIF(BUILD_TESTING)
 
 SUBDIRS(
   src
-#  depend
+# depend
   )
