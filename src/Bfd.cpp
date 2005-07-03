@@ -1,9 +1,13 @@
-#include "boost/filesystem/operations.hpp"
-#include "boost/filesystem/path.hpp"
-#include "bfd.h"
 #include "Bfd.h"
 #include "ObjectFile.h"
 #include "Factory.h"
+
+#include <bfd.h>
+
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+
+#include <stdexcept>
 
 namespace fs = boost::filesystem;
 
@@ -12,7 +16,7 @@ Bfd::Bfd(Factory& factory)
 {
 }
 
-Entity* Bfd::Read(const boost::filesystem::path& path, int packageLevel)
+Entity* Bfd::Read(const fs::path& path, int packageLevel)
 {
   char *target = 0;
   bfd* file = bfd_openr (path.string().c_str(), target);
@@ -62,7 +66,7 @@ Entity* Bfd::Read(const boost::filesystem::path& path, int packageLevel)
   return object;
 }
 
-Entity* Bfd::ReadPackage(const boost::filesystem::path& path, int packageLevel)
+Entity* Bfd::ReadPackage(const fs::path& path, int /*packageLevel*/)
 {
   char *target = 0;
   bfd* file = bfd_openr (path.string().c_str(), target);
@@ -76,7 +80,7 @@ Entity* Bfd::ReadPackage(const boost::filesystem::path& path, int packageLevel)
  
   if (bfd_check_format (file, bfd_object))
   {
-    throw;
+    throw std::logic_error("unknown format");
   }
 
   if (bfd_check_format (file, bfd_archive))

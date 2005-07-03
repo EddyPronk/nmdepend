@@ -51,7 +51,7 @@ void Analyser::AddPackages(const std::vector<string>& packages)
     cout << "add " << *pos << endl;
 
     fs::path path(*pos);
-    Entity* o = m_Bfd.ReadPackage(*pos, m_packageLevel);
+    m_Bfd.ReadPackage(*pos, m_packageLevel);
   }
 }
   
@@ -96,8 +96,7 @@ else
    {
       for(filelist_t::iterator pos = list.begin(); pos != list.end(); ++pos)
       {
-        Entity* o = m_Bfd.Read(*pos, m_packageLevel);
-        assert(o);
+        m_Bfd.Read(*pos, m_packageLevel);
       }
       
       for(std::set<ObjectPackage>::iterator i = m_Factory.m_PackageSet.begin(); i != m_Factory.m_PackageSet.end(); ++i)
