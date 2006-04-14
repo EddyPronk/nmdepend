@@ -11,4 +11,6 @@ ADD_TEST("SmokeTest" ../nmdepend --help)
 ADD_TEST("CheckOutputProject1" ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/checkOutput.pl project1 ${CMAKE_CURRENT_SOURCE_DIR} 1)
 ADD_TEST("CheckOutputProject2" ${PERL_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/checkOutput.pl project2 ${CMAKE_CURRENT_SOURCE_DIR} 2)
 
-SUBDIRS(project1 project2)
+ADD_SUBDIRECTORY(project1)
+ADD_SUBDIRECTORY(project2)
+

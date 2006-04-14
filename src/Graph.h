@@ -56,7 +56,7 @@ public:
  //   assert( from.Name() != to.Name() );
     add_edge(m_Indexes[&from], m_Indexes[&to], m_Graph);
   }
-  type& get()
+  const type& get()
   {
     return m_Graph;
   }

@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <iostream>
+#include <stdexcept>
 #include <cassert>
 #include "ObjectFile.h"
 #include "Symbol.h"
@@ -78,7 +79,8 @@ void ObjectFile::Read(const boost::filesystem::path& objectfile)
   char *target = 0;
   cout << objectfile.string() << endl;
   bfd* file = bfd_openr (objectfile.string().c_str(), target);
-  assert(file);
+  if(!file)
+    throw std::logic_error("Can't open " + objectfile.string());
   Read(file);
 }
 

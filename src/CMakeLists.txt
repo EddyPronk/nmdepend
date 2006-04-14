@@ -60,7 +60,7 @@ ADD_EXECUTABLE(nmdepend main.cpp)
 TARGET_LINK_LIBRARIES(nmdepend core)
 
 IF(BUILD_TESTING)
-  SUBDIRS(test)
+  ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTING)
 
 INSTALL_TARGETS(/bin nmdepend)

@@ -42,14 +42,26 @@ public:
   }
 };
 
-template<class T>
+  class my_label_writer
+  {
+  public:
+    my_label_writer(vector<Entity*>& e) : e_(e) {}
+    template<typename VertexOrEdge>
+    void operator()(std::ostream& out, const VertexOrEdge& v) const {
+      out << "[label=\"" << e_[v]->Name() << "\"]";
+    }
+    vector<Entity*>& e_;
+  };
+
+template<typename T>
 struct wrapper
 {
   wrapper(vector<T*>& v) : m_v(v) {}
-  const string& operator[](int i) const
+  /*
+  boost::vertex_index_t operator boost::vertex_index_t(int i)
   {
     return m_v[i]->Name();
-  }
+    }*/
   const vector<T*>& m_v;
 };
 

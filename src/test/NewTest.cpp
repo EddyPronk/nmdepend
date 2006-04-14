@@ -90,8 +90,10 @@ protected:
     g(f,h); // add the same dependency a 2nd time
     g(b,h);
     
-    wrapper<Entity> w(m_ObjectFiles);
-    boost::write_graphviz(cout, g.get(),
-      boost::make_label_writer(w));
+    my_label_writer w(m_ObjectFiles);
+      boost::default_writer epw;
+      boost::default_writer gpw;
+      boost::write_graphviz(cout, g.get(), w, epw, gpw);
+    //boost::write_graphviz(cout, g.get());
   }
 };

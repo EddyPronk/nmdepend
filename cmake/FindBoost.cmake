@@ -1,7 +1,7 @@
 FIND_PATH(Boost_INCLUDE_DIR boost/config.hpp
 	/usr/include
 	/usr/local/include/boost-1_32/
-	/usr/include/boost-1_32/
+	/usr/local/include/boost-1_33_1/
 	)
 
 SET(Boost_LIB_SUFFIX "gcc")
