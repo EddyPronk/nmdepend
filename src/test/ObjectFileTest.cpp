@@ -151,12 +151,12 @@ protected:
 
     ObjectFile b(g1, "b.obj", store);
     CPPUNIT_ASSERT_EQUAL(string("b.obj"), b.Name());
-    fs::path fileName = fs::initial_path() / "project1/sub1/b.o";
+    fs::path fileName = fs::initial_path() / "project1/sub1/CMakeFiles/p1sub1.dir/b.o";
     fileName.normalize();
     b.Read(fileName);
 
     ObjectFile f(g1, "f.obj", store);
-    fileName = fs::initial_path() / "project1/sub2/f.o";
+    fileName = fs::initial_path() / "project1/sub2/CMakeFiles/p1sub2.dir/f.o";
     fileName.normalize();
     CPPUNIT_ASSERT(!b.Depend(f));
     f.Read(fileName);
