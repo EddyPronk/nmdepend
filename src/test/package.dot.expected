@@ -1,5 +1,4 @@
 digraph G {
-node [shape=box]
 0[label="app"];
 1[label="sub1"];
 2[label="sub2"];
