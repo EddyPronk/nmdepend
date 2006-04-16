@@ -1,13 +1,12 @@
 digraph G {
-node [shape=box]
-0[label="main.o"];
-1[label="a.o"];
-2[label="b.o"];
-3[label="c.o"];
-4[label="d.o"];
-5[label="e.o"];
-6[label="f.o"];
+0[label="a.o"];
+1[label="b.o"];
+2[label="c.o"];
+3[label="d.o"];
+4[label="e.o"];
+5[label="f.o"];
+6[label="main.o"];
 0->1 ;
-1->2 ;
-2->6 ;
+1->5 ;
+6->0 ;
 }

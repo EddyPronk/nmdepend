@@ -30,47 +30,15 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-class CallBackDummy : public Callback
+class my_label_writer
 {
-public:
-  typedef Entity* Ptr;
-
-  typedef std::pair<Ptr, Ptr> pair;
-  virtual void operator()(Entity& from, Entity& to)
-  {
-    cout << from << " -> " << to << endl;
-  }
-};
-
-  class my_label_writer
-  {
-  public:
-    my_label_writer(vector<Entity*>& e) : e_(e) {}
-    template<typename VertexOrEdge>
+ public:
+ my_label_writer(vector<Entity*>& e) : e_(e) {}
+  template<typename VertexOrEdge>
     void operator()(std::ostream& out, const VertexOrEdge& v) const {
-      out << "[label=\"" << e_[v]->Name() << "\"]";
-    }
-    vector<Entity*>& e_;
-  };
-
-template<typename T>
-struct wrapper
-{
-  wrapper(vector<T*>& v) : m_v(v) {}
-  /*
-  boost::vertex_index_t operator boost::vertex_index_t(int i)
-  {
-    return m_v[i]->Name();
-    }*/
-  const vector<T*>& m_v;
-};
-
-struct sample_graph_writer
-{
-  void operator()(std::ostream& out) const
-  {
-    out << "node [shape=box]" << std::endl;
+    out << "[label=\"" << e_[v]->Name() << "\"]";
   }
+  vector<Entity*>& e_;
 };
 
 class Analyser
@@ -95,8 +63,6 @@ private:
    filelist_t list;
    Graph m_ObjectGraph;
    Graph m_PackageGraph;
-   //std::set<ObjectPackage> m_PackageSet;
    std::vector<Entity*> m_Packages;
-   //std::vector<Entity*> m_ObjectFiles;
    int m_packageLevel;
 };

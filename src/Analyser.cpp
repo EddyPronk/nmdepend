@@ -119,34 +119,14 @@ else
       m_Factory.m_symbols.Statistics();
    }
    
-   struct Foo
-   {
-   };
-
-
    void Analyser::WriteObjectGraph(std::ostream& out)
    {
-      wrapper<Entity> w(m_Factory.m_ObjectFiles);
-      boost::default_writer vpw;
-      boost::default_writer epw;
-      boost::default_writer gpw;
       my_label_writer lw(m_Factory.m_ObjectFiles);
-      Foo foo;
-      //sample_graph_writer sample;
-      //      boost::write_graphviz(out, m_ObjectGraph.get(), m_Factory.m_ObjectFiles, def, sample);
-      boost::write_graphviz(out, m_ObjectGraph.get(), lw, epw, gpw);
+      boost::write_graphviz(out, m_ObjectGraph.get(), lw);
    }
    
-   int get(boost::vertex_index_t, const Graph&)
-   {
-     return 0;
-   }
-
    void Analyser::WritePackageGraph(std::ostream& out)
    {
-     //wrapper<Entity> w(m_Packages);
-      boost::default_writer def;
-      sample_graph_writer sample;
-      //boost::write_graphviz(out, m_PackageGraph,
-      //boost::make_label_writer(w), def, sample);
+      my_label_writer lw(m_Packages);
+      boost::write_graphviz(out, m_PackageGraph.get(), lw);
    }

@@ -35,6 +35,11 @@ Entity* Bfd::Read(const fs::path& path, int packageLevel)
     {
       --p;
     }
+    if(packageLevel == 3)
+    {
+      --p;
+      --p;
+    }
     std::string packagename = *p;
   
     ObjectPackage* op = m_Factory.CreatePackage(packagename);
