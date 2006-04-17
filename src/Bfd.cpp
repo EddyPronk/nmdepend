@@ -16,6 +16,17 @@ Bfd::Bfd(Factory& factory)
 {
 }
 
+const std::string Bfd::packageName(const fs::path& path, int packageLevel)
+{
+  fs::path::iterator p = path.end();
+  --p;
+  
+  for(int i = 0; i < packageLevel; ++i)
+      --p;
+
+  return *p;
+}
+
 Entity* Bfd::Read(const fs::path& path, int packageLevel)
 {
   char *target = 0;
@@ -30,19 +41,8 @@ Entity* Bfd::Read(const fs::path& path, int packageLevel)
  
   if (bfd_check_format (file, bfd_object))
   {
-    --p;
-    if(packageLevel == 2)
-    {
-      --p;
-    }
-    if(packageLevel == 3)
-    {
-      --p;
-      --p;
-    }
-    std::string packagename = *p;
   
-    ObjectPackage* op = m_Factory.CreatePackage(packagename);
+    ObjectPackage* op = m_Factory.CreatePackage(packageName(path, packageLevel));
     assert(op);
     ObjectFile* of = m_Factory.CreateObject(name);
     of->Read(file);

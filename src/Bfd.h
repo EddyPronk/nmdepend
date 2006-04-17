@@ -19,6 +19,7 @@ public:
   Entity* Read(const boost::filesystem::path& objectfile, int packageLevel);
   Entity* ReadPackage(const boost::filesystem::path& objectfile, int packageLevel);
 private:
+  static const std::string packageName(const boost::filesystem::path& path, int packageLevel);
   Factory& m_Factory;
 };
 

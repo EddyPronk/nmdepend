@@ -33,6 +33,7 @@ Analyser::Analyser(int packageLevel)
 {
 }
 
+
 void Analyser::Add(const std::vector<string>& files)
 {
   for(vector<string>::const_iterator pos = files.begin() ;
@@ -78,18 +79,17 @@ void Analyser::find_file( const fs::path& dir_path)
          {
          	
            //if (itr->leaf().rfind(".o") != std::string::npos)
-            if (fs::extension(*itr) == ".o")
-            {
-               list.push_back(*itr);
-            }
+	   if (fs::extension(*itr) == ".o")
+	      {
+		list.push_back(*itr);
+	      }
          }
       }
-   }
-
-else
-{
-  list.push_back(dir_path);
-}
+  }
+  else
+  {
+    list.push_back(dir_path);
+  }
 }
 
    void Analyser::ReadObjects()
@@ -105,28 +105,28 @@ else
       }
    }
 
-   void Analyser::Link()
-   {
-      m_ObjectGraph.init(m_Factory.m_ObjectFiles);
-      m_PackageGraph.init(m_Packages);
-      for (std::vector<Entity*>::iterator pos = m_Factory.m_ObjectFiles.begin();
-      pos != m_Factory.m_ObjectFiles.end();
-      ++pos)
-      {
-         std::cout << "linking obj " << (*pos)->Name() << std::endl;
+void Analyser::Link()
+{
+  m_ObjectGraph.init(m_Factory.m_ObjectFiles);
+  m_PackageGraph.init(m_Packages);
+  for (std::vector<Entity*>::iterator pos = m_Factory.m_ObjectFiles.begin();
+       pos != m_Factory.m_ObjectFiles.end();
+       ++pos)
+    {
+      std::cout << "linking obj " << (*pos)->Name() << std::endl;
          (*pos)->Link();
-      }
-      m_Factory.m_symbols.Statistics();
-   }
+    }
+  m_Factory.m_symbols.Statistics();
+}
    
-   void Analyser::WriteObjectGraph(std::ostream& out)
-   {
-      my_label_writer lw(m_Factory.m_ObjectFiles);
-      boost::write_graphviz(out, m_ObjectGraph.get(), lw);
-   }
+void Analyser::WriteObjectGraph(std::ostream& out)
+{
+  my_label_writer lw(m_Factory.m_ObjectFiles);
+  boost::write_graphviz(out, m_ObjectGraph.get(), lw);
+}
    
-   void Analyser::WritePackageGraph(std::ostream& out)
-   {
-      my_label_writer lw(m_Packages);
-      boost::write_graphviz(out, m_PackageGraph.get(), lw);
-   }
+void Analyser::WritePackageGraph(std::ostream& out)
+{
+  my_label_writer lw(m_Packages);
+  boost::write_graphviz(out, m_PackageGraph.get(), lw);
+}

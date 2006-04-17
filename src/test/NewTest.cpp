@@ -18,6 +18,9 @@
 
 #include <iostream>
 #include <cppunit/extensions/HelperMacros.h>
+
+#define private public
+
 #include "ObjectFile.h"
 #include "ObjectPackage.h"
 #include "SymbolStore.h"
@@ -43,6 +46,7 @@ using namespace std;
 
 
 using boost::GraphvizDigraph;
+
 
 class NewTest : public CPPUNIT_NS::TestFixture
 {
@@ -70,6 +74,12 @@ protected:
 
   void newTest2()  
   {
+    fs::path a = "aaa/bbb/ccc/x.o";
+    //Bfd reader;
+    CPPUNIT_ASSERT_EQUAL(string("x.o"), Bfd::packageName(a, 0));
+    CPPUNIT_ASSERT_EQUAL(string("ccc"), Bfd::packageName(a, 1));
+    CPPUNIT_ASSERT_EQUAL(string("bbb"), Bfd::packageName(a, 2));
+    CPPUNIT_ASSERT_EQUAL(string("aaa"), Bfd::packageName(a, 3));
   }
 
   void newTest3()  
