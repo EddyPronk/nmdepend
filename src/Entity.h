@@ -36,15 +36,17 @@ public:
   virtual void Link(Entity&) {}
   virtual bool Depend(const Entity&) const { return false; }
 //  virtual void intersection(const Entity&, SymIndex_t& i) const {}
-private:
-  friend std::ostream& operator<<(std::ostream& out, const Entity& e)
-  {
-    return out << e.m_Name;
-  }
+public:
+	void print(std::ostream& os) const
+	{
+		os << m_Name;
+	}
 private:
   std::string m_Name;
   Entity* m_Parent;
 };
+
+std::ostream& operator<<(std::ostream& out, const Entity& e);	
 
 #endif
 

@@ -47,14 +47,15 @@ public:
   {
     CPPUNIT_ASSERT_EQUAL(pair(&from, &to), m_Pair);
   }
-  friend std::ostream& operator<<(std::ostream& out, const pair& v)
-  {
-    out << *(v.first) << " " << *(v.second);
-    return out;
-  }
 private:  
   pair m_Pair;
 };
+
+std::ostream& operator<<(std::ostream& out, const CallBackStub::pair& v)
+{
+    out << *(v.first) << " " << *(v.second);
+    return out;
+}
 
 class ObjectFileTest : public CPPUNIT_NS::TestFixture
 {

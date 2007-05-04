@@ -39,3 +39,8 @@ Entity* Entity::Parent()
   return m_Parent;
 }
 
+std::ostream& operator<<(std::ostream& os, const Entity& e)
+{
+	e.print(os);
+	return os;
+}
