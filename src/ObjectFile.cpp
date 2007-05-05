@@ -22,12 +22,18 @@
 #include "ObjectFile.h"
 #include "Symbol.h"
 #include "bfd.h"
+//#include "Demangle.h"
+
+std::string Demangled(const std::string& name);
 
 using namespace std;
 
-ObjectFile::ObjectFile(Callback& callback, const std::string& name, SymbolStore& store)
+ObjectFile::ObjectFile(Callback& callback,
+					   SymbolAdded& symbol,
+					   const std::string& name, SymbolStore& store)
  : Entity(name)
  , m_Callback(callback)
+ , on_symbol_added(symbol)
  , m_SymbolStore(store)
 {
 }
@@ -56,92 +62,95 @@ void ObjectFile::intersection(const Entity& entity, SymIndex_t& i) const
 
 void ObjectFile::Link()
 {
-  for(SymIndex_t::iterator pos = m_SymImports.begin()
-    ; pos != m_SymImports.end(); ++pos)
-  {
-    const SymbolPtr r = *pos;
+	for(SymIndex_t::iterator pos = m_SymImports.begin()
+			; pos != m_SymImports.end(); ++pos)
+	{
+		const SymbolPtr r = *pos;
     
-    ObjectFile* owner = r->Owner();
-    if(owner)
-    {
-      if (owner != this)
-      {
-        m_Callback(*this, *owner);
-        assert(Parent());
-        Parent()->Link(*owner->Parent());
-      }
-    }
-  }
+		ObjectFile* owner = r->Owner();
+		if(owner)
+		{
+			//std::cout << Demangled((*pos)->Name()) << std::endl;
+			on_symbol_added((*pos)->Name());
+			if (owner != this)
+			{
+				m_Callback(*this, *owner);
+				//std::cout << from.Name() << to.Name() << std::endl;
+				assert(Parent());
+				Parent()->Link(*owner->Parent());
+			}
+		}
+	}
 }
 
-void ObjectFile::Read(const boost::filesystem::path& objectfile)
-{
-  char *target = 0;
-  cout << objectfile.string() << endl;
-  bfd* file = bfd_openr (objectfile.string().c_str(), target);
-  if(!file)
-    throw std::logic_error("Can't open " + objectfile.string());
-  Read(file);
-}
+	void ObjectFile::Read(const boost::filesystem::path& objectfile)
+	{
+		char *target = 0;
+		cout << objectfile.string() << endl;
+		bfd* file = bfd_openr (objectfile.string().c_str(), target);
+		if(!file)
+			throw std::logic_error("Can't open " + objectfile.string());
+		Read(file);
+	}
 
-void ObjectFile::Read(bfd* file)
-{
-  assert(bfd_check_format (file, bfd_object));
+	void ObjectFile::Read(bfd* file)
+	{
+		assert(bfd_check_format (file, bfd_object));
 
-  // This is the filename with full path inside the object file.
-  // Might be useful for analysing libraries.
-  //std::cout << "file " << bfd_get_filename (file) << std::endl;
+		// This is the filename with full path inside the object file.
+		// Might be useful for analysing libraries.
+		//std::cout << "file " << bfd_get_filename (file) << std::endl;
 
 
-  // bfd_fffalse not in bdf.h on Cygwin and Gentoo.
-  //bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
-  bfd_boolean dynamic = 0;
-  unsigned int size = 0;
-  void *minisyms = NULL;
+		// bfd_fffalse not in bdf.h on Cygwin and Gentoo.
+		//bfd_boolean dynamic = static_cast<bfd_boolean>(0); // was: bfd_fffalse;
+		bfd_boolean dynamic = 0;
+		unsigned int size = 0;
+		void *minisyms = NULL;
 
-  long symcount = bfd_read_minisymbols (file, dynamic, &minisyms, &size);
+		long symcount = bfd_read_minisymbols (file, dynamic, &minisyms, &size);
 
-  asymbol* store = bfd_make_empty_symbol (file);
-  assert(store);
+		asymbol* store = bfd_make_empty_symbol (file);
+		assert(store);
 
-  bfd_byte* from = static_cast<bfd_byte*>(minisyms);
-  bfd_byte* fromend = from + symcount * size;
-  for (; from < fromend; from += size)
-  {
-    asymbol* sym = bfd_minisymbol_to_symbol (file, dynamic, from, store);
-    assert(sym);
+		bfd_byte* from = static_cast<bfd_byte*>(minisyms);
+		bfd_byte* fromend = from + symcount * size;
+		for (; from < fromend; from += size)
+		{
+			asymbol* sym = bfd_minisymbol_to_symbol (file, dynamic, from, store);
+			assert(sym);
 
-    const char* symname = bfd_asymbol_name (sym);
+			const char* symname = bfd_asymbol_name (sym);
     
-    if (sym->flags == 0)
-    {
-      asection* section = bfd_get_section (sym);
-      if (bfd_is_und_section (section))
-      {
-        AddImportSymbol(symname);
-      }
-      else
-      {
-        AddExportSymbol(symname);
-      } 
-    }
+			if (sym->flags == 0)
+			{
+				asection* section = bfd_get_section (sym);
+				if (bfd_is_und_section (section))
+				{
+					AddImportSymbol(symname);
+				}
+				else
+				{
+					AddExportSymbol(symname);
+				} 
+			}
 
-    if(sym->flags & BSF_FUNCTION)
-    {
-      AddExportSymbol(symname);
-    }
+			if(sym->flags & BSF_FUNCTION)
+			{
+				AddExportSymbol(symname);
+			}
 
-    if(sym->flags & BSF_OBJECT)
-    {
-      AddExportSymbol(symname);
-    }
-  }
-}
+			if(sym->flags & BSF_OBJECT)
+			{
+				AddExportSymbol(symname);
+			}
+		}
+	}
 
-bool ObjectFile::Depend(const Entity& o) const
-{
-  SymIndex_t intersect;
-  intersection(o, intersect);
+	bool ObjectFile::Depend(const Entity& o) const
+	{
+		SymIndex_t intersect;
+		intersection(o, intersect);
 
-  return !intersect.empty();
-}
+		return !intersect.empty();
+	}

@@ -50,60 +50,62 @@ using boost::GraphvizDigraph;
 
 class NewTest : public CPPUNIT_NS::TestFixture
 {
-  CPPUNIT_TEST_SUITE( NewTest );
-  CPPUNIT_TEST( newTest );
-  CPPUNIT_TEST( newTest2 );
-  CPPUNIT_TEST( newTest3 );
-  CPPUNIT_TEST_SUITE_END();
+	CPPUNIT_TEST_SUITE( NewTest );
+	CPPUNIT_TEST( newTest );
+	CPPUNIT_TEST( newTest2 );
+	CPPUNIT_TEST( newTest3 );
+	CPPUNIT_TEST_SUITE_END();
 
 public:
-  void setUp()
-  {
-  }
+	void setUp()
+	{
+	}
 
 protected:
 
-  void newTest()  
-  {
-    Analyser a(1);
-    fs::path exampleDir = fs::initial_path() / "project1";
-    exampleDir.normalize();
-    a.find_file(exampleDir);
-    a.ReadObjects();
-  }
+	void newTest()  
+	{
+		SymbolAdded on_symbol_added;
+		Analyser a(1, on_symbol_added);
+		fs::path exampleDir = fs::initial_path() / "project1";
+		exampleDir.normalize();
+		a.find_file(exampleDir);
+		a.ReadObjects();
+	}
 
-  void newTest2()  
-  {
-    fs::path a = "aaa/bbb/ccc/x.o";
-    //Bfd reader;
-    CPPUNIT_ASSERT_EQUAL(string("x.o"), Bfd::packageName(a, 0));
-    CPPUNIT_ASSERT_EQUAL(string("ccc"), Bfd::packageName(a, 1));
-    CPPUNIT_ASSERT_EQUAL(string("bbb"), Bfd::packageName(a, 2));
-    CPPUNIT_ASSERT_EQUAL(string("aaa"), Bfd::packageName(a, 3));
-  }
+	void newTest2()  
+	{
+		fs::path a = "aaa/bbb/ccc/x.o";
+		//Bfd reader;
+		CPPUNIT_ASSERT_EQUAL(string("x.o"), Bfd::packageName(a, 0));
+		CPPUNIT_ASSERT_EQUAL(string("ccc"), Bfd::packageName(a, 1));
+		CPPUNIT_ASSERT_EQUAL(string("bbb"), Bfd::packageName(a, 2));
+		CPPUNIT_ASSERT_EQUAL(string("aaa"), Bfd::packageName(a, 3));
+	}
 
-  void newTest3()  
-  {
-    Graph g;
-    SymbolStore store;
-    ObjectFile b(g, "b.obj", store);
-    ObjectFile f(g, "f.obj", store);
-    ObjectFile h(g, "h.obj", store);
-    vector<Entity*> m_ObjectFiles;
-    m_ObjectFiles.push_back(&b);
-    m_ObjectFiles.push_back(&f);
-    m_ObjectFiles.push_back(&h);
+	void newTest3()  
+	{
+		Graph g;
+		SymbolAdded on_symbol_added;
+		SymbolStore store;
+		ObjectFile b(g, on_symbol_added, "b.obj", store);
+		ObjectFile f(g, on_symbol_added, "f.obj", store);
+		ObjectFile h(g, on_symbol_added, "h.obj", store);
+		vector<Entity*> m_ObjectFiles;
+		m_ObjectFiles.push_back(&b);
+		m_ObjectFiles.push_back(&f);
+		m_ObjectFiles.push_back(&h);
     
-    g.init(m_ObjectFiles);
-    g(b,f);
-    g(f,h);
-    g(f,h); // add the same dependency a 2nd time
-    g(b,h);
+		g.init(m_ObjectFiles);
+		g(b,f);
+		g(f,h);
+		g(f,h); // add the same dependency a 2nd time
+		g(b,h);
     
-    my_label_writer w(m_ObjectFiles);
-      boost::default_writer epw;
-      boost::default_writer gpw;
-      boost::write_graphviz(cout, g.get(), w, epw, gpw);
-    //boost::write_graphviz(cout, g.get());
-  }
+		my_label_writer w(m_ObjectFiles);
+		boost::default_writer epw;
+		boost::default_writer gpw;
+		boost::write_graphviz(cout, g.get(), w, epw, gpw);
+		//boost::write_graphviz(cout, g.get());
+	}
 };

@@ -12,17 +12,20 @@ class Entity;
 
 class Factory
 {
-  friend class Analyser;
+	friend class Analyser;
 public:
-  Factory(Callback& object, Callback& package);
-  ObjectPackage* CreatePackage(const std::string& name);
-  ObjectFile* CreateObject(const std::string& name);
+	Factory(Callback&,
+			Callback&,
+			SymbolAdded&);
+	ObjectPackage* CreatePackage(const std::string& name);
+	ObjectFile* CreateObject(const std::string& name);
 private:
-  std::set<ObjectPackage> m_PackageSet;
-  std::vector<Entity*> m_ObjectFiles;
-  SymbolStore m_symbols;
-  Callback& m_ObjectGraph;
-  Callback& m_PackageGraph;
+	std::set<ObjectPackage> m_PackageSet;
+	std::vector<Entity*> m_ObjectFiles;
+	SymbolStore m_symbols;
+	Callback& m_ObjectGraph;
+	Callback& m_PackageGraph;
+	SymbolAdded& on_symbol_added;
 };
 
 #endif

@@ -32,6 +32,7 @@ INCLUDE_DIRECTORIES(
 )
 
 ADD_LIBRARY(core
+  Demangler.cpp
   Entity.cpp
   Bfd.cpp
   Factory.cpp

@@ -26,9 +26,9 @@
 namespace fs = boost::filesystem;
 using namespace std;
 
-Analyser::Analyser(int packageLevel)
+Analyser::Analyser(int packageLevel, SymbolAdded& on_symbol_added)
  : m_Bfd(m_Factory)
- , m_Factory(m_ObjectGraph, m_PackageGraph)
+ , m_Factory(m_ObjectGraph, m_PackageGraph, on_symbol_added)
  , m_packageLevel(packageLevel)
 {
 }

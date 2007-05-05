@@ -100,7 +100,8 @@ protected:
     aaa.SetParent(aaaa);
     ObjectPackage aa(g2, "aa"); // superpackage of a
     aa.SetParent(aaa);
-    ObjectFile a(g1, "a.obj", store);
+	SymbolAdded on_symbol_added;
+    ObjectFile a(g1, on_symbol_added, "a.obj", store);
     a.SetParent(aa);
 
     a.AddImportSymbol("b");
@@ -113,7 +114,7 @@ protected:
     bbb.SetParent(bbbb);
     ObjectPackage bb(g2, "bb"); // superpackage of b
     bb.SetParent(bbb);
-    ObjectFile b(g1, "b.obj", store);
+    ObjectFile b(g1, on_symbol_added, "b.obj", store);
     b.SetParent(bb);
 
     b.AddExportSymbol("a");
@@ -150,13 +151,14 @@ protected:
     SymbolStore store;
     CallBackStub g1;
 
-    ObjectFile b(g1, "b.obj", store);
+	SymbolAdded on_symbol_added;
+    ObjectFile b(g1, on_symbol_added, "b.obj", store);
     CPPUNIT_ASSERT_EQUAL(string("b.obj"), b.Name());
     fs::path fileName = fs::initial_path() / "project1/sub1/CMakeFiles/p1sub1.dir/b.o";
     fileName.normalize();
     b.Read(fileName);
 
-    ObjectFile f(g1, "f.obj", store);
+    ObjectFile f(g1, on_symbol_added, "f.obj", store);
     fileName = fs::initial_path() / "project1/sub2/CMakeFiles/p1sub2.dir/f.o";
     fileName.normalize();
     CPPUNIT_ASSERT(!b.Depend(f));

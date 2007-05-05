@@ -39,7 +39,10 @@ public:
   ~ObjectFile() {}
 //  typedef std::set<SymbolPtr> SymIndex_t;
 
-  ObjectFile(Callback&, const std::string& name, SymbolStore& store);
+  ObjectFile(Callback&,
+			 SymbolAdded&,
+			 const std::string& name,
+			 SymbolStore& store);
 
   void Read(const boost::filesystem::path& objectfile);
   void Read(bfd* file);
@@ -55,6 +58,7 @@ public:
 
 private:
    Callback& m_Callback;
+   SymbolAdded& on_symbol_added;
 
    // List of imported symbols
    SymIndex_t m_SymImports;

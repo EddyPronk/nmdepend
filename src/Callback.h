@@ -27,12 +27,18 @@ using namespace std;
 class Callback
 {
 public:
-  virtual ~Callback() {}
-  virtual void operator()(Entity&, Entity&)
-  {
-    std::cout << "Callback operator()" << std::endl;
-  }
-private:
+	virtual ~Callback() {}
+	virtual void operator()(Entity&, Entity&) = 0;
+};
+
+class SymbolAdded
+{
+public:
+	virtual ~SymbolAdded() {}
+	virtual void operator()(const std::string& symbol)
+	{
+		std::cout << symbol << std::endl;
+	}
 };
 
 #endif

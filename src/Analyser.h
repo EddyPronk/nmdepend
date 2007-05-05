@@ -46,7 +46,7 @@ class Analyser
 public:
    typedef std::vector<fs::path> filelist_t;
 
-   Analyser(int packageLevel);
+	Analyser(int packageLevel, SymbolAdded&);
    
    // todo : match wildcards with filter_iterator and regex (*.o) (*.a) (*.lib)
    void find_file( const fs::path& dir_path);
