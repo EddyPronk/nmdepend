@@ -24,10 +24,10 @@
 
 using namespace std;
 
-class Callback
+class DependencyAddedEvent
 {
 public:
-	virtual ~Callback() {}
+	virtual ~DependencyAddedEvent() {}
 	virtual void operator()(Entity&, Entity&) = 0;
 };
 

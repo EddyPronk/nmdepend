@@ -20,9 +20,9 @@
 #include <iostream>
 #include "ObjectPackage.h"
 
-ObjectPackage::ObjectPackage(Callback& callback, const std::string& name)
+ObjectPackage::ObjectPackage(DependencyAddedEvent& callback, const std::string& name)
  : Entity(name)
- , m_Callback(callback)
+ , on_dependency_added(callback)
 {
 }
 
@@ -78,7 +78,7 @@ void ObjectPackage::Link(Entity& rsh)
 {
   if (this != &rsh)
   {
-    m_Callback(*this, rsh);
+    on_dependency_added(*this, rsh);
     if(Parent())
     {
       Parent()->Link(*rsh.Parent());

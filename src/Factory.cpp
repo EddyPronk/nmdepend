@@ -1,7 +1,7 @@
 #include "Factory.h"
 #include "ObjectFile.h"
 
-Factory::Factory(Callback& object, Callback& package, SymbolAdded& symbol)
+Factory::Factory(DependencyAddedEvent& object, DependencyAddedEvent& package, SymbolAdded& symbol)
  : m_ObjectGraph(object)
  , m_PackageGraph(package)
  , on_symbol_added(symbol)

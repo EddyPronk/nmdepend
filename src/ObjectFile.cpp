@@ -28,11 +28,11 @@ std::string Demangled(const std::string& name);
 
 using namespace std;
 
-ObjectFile::ObjectFile(Callback& callback,
+ObjectFile::ObjectFile(DependencyAddedEvent& callback,
 					   SymbolAdded& symbol,
 					   const std::string& name, SymbolStore& store)
  : Entity(name)
- , m_Callback(callback)
+ , on_dependency_added(callback)
  , on_symbol_added(symbol)
  , m_SymbolStore(store)
 {
@@ -74,7 +74,7 @@ void ObjectFile::Link()
 			on_symbol_added((*pos)->Name());
 			if (owner != this)
 			{
-				m_Callback(*this, *owner);
+				on_dependency_added(*this, *owner);
 				//std::cout << from.Name() << to.Name() << std::endl;
 				assert(Parent());
 				Parent()->Link(*owner->Parent());

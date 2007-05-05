@@ -32,16 +32,16 @@ INCLUDE_DIRECTORIES(
 )
 
 ADD_LIBRARY(core
+  Analyser.cpp
+  Bfd.cpp
   Demangler.cpp
   Entity.cpp
-  Bfd.cpp
   Factory.cpp
+  Graph.cpp
   ObjectFile.cpp
   ObjectPackage.cpp
   Symbol.cpp
   SymbolStore.cpp
-  Graph.cpp
-  Analyser.cpp
   )
 
 TARGET_LINK_LIBRARIES(core

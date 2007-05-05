@@ -39,7 +39,7 @@ public:
   ~ObjectFile() {}
 //  typedef std::set<SymbolPtr> SymIndex_t;
 
-  ObjectFile(Callback&,
+  ObjectFile(DependencyAddedEvent&,
 			 SymbolAdded&,
 			 const std::string& name,
 			 SymbolStore& store);
@@ -57,7 +57,7 @@ public:
   void intersection(const Entity& rsh, SymIndex_t& i) const;
 
 private:
-   Callback& m_Callback;
+   DependencyAddedEvent& on_dependency_added;
    SymbolAdded& on_symbol_added;
 
    // List of imported symbols

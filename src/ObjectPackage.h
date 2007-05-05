@@ -31,7 +31,7 @@ class ObjectFile;
 class ObjectPackage : public Entity
 {
 public:
-   ObjectPackage(Callback&, const std::string& name);
+   ObjectPackage(DependencyAddedEvent&, const std::string& name);
 //   virtual void AddImport(Package* p);
 //   virtual void AddExport(Package* p);
 
@@ -47,7 +47,7 @@ public:
    std::set<ObjectFile*> m_Requires;
    std::set<ObjectFile*> m_Provides;
 private:
-   Callback& m_Callback;
+   DependencyAddedEvent& on_dependency_added;
 };
 
 #endif

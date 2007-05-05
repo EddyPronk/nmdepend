@@ -37,7 +37,7 @@ public:
    typedef std::vector<Package*> SubPackageList_t;
    typedef std::map<std::string, Package*> PackageRegistry_t;
 
-   Package(Callback<Package>& callback, const std::string& name);
+   Package(DependencyAddedEvent<Package>& callback, const std::string& name);
 //   void SetParent(Package& parent);
    void Imports(SubPackageList_t& list);
 //   virtual void Provides(SubPackageList_t& list);
@@ -66,7 +66,7 @@ private:
    // For storing inter package dependencies
    std::set<Package*> m_Imports;
    std::set<Package*> m_Exports;
-   Callback<Package>& m_Callback;
+   DependencyAddedEvent<Package>& on_dependency_added;
 protected:
    Package* m_Parent;
 };

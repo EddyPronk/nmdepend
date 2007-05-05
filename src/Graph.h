@@ -30,7 +30,7 @@
 
 class ObjectFile;
 
-class Graph : public Callback
+class Graph : public DependencyAddedEvent
 {
 public:
   typedef boost::adjacency_list<

@@ -14,8 +14,8 @@ class Factory
 {
 	friend class Analyser;
 public:
-	Factory(Callback&,
-			Callback&,
+	Factory(DependencyAddedEvent&,
+			DependencyAddedEvent&,
 			SymbolAdded&);
 	ObjectPackage* CreatePackage(const std::string& name);
 	ObjectFile* CreateObject(const std::string& name);
@@ -23,8 +23,8 @@ private:
 	std::set<ObjectPackage> m_PackageSet;
 	std::vector<Entity*> m_ObjectFiles;
 	SymbolStore m_symbols;
-	Callback& m_ObjectGraph;
-	Callback& m_PackageGraph;
+	DependencyAddedEvent& m_ObjectGraph;
+	DependencyAddedEvent& m_PackageGraph;
 	SymbolAdded& on_symbol_added;
 };
 
