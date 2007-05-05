@@ -35,9 +35,26 @@ class SymbolAdded
 {
 public:
 	virtual ~SymbolAdded() {}
+	virtual void operator()(const std::string&)
+	{
+	}
+};
+
+std::string Demangled(const std::string& name);
+
+struct PrintSymbols : public SymbolAdded
+{
 	virtual void operator()(const std::string& symbol)
 	{
 		std::cout << symbol << std::endl;
+	}
+};
+
+struct PrintSymbolsAndDemangle : public SymbolAdded
+{
+	void operator()(const std::string& symbol)
+	{
+		std::cout << Demangled(symbol) << std::endl;
 	}
 };
 

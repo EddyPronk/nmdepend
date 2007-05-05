@@ -22,9 +22,6 @@
 #include "ObjectFile.h"
 #include "Symbol.h"
 #include "bfd.h"
-//#include "Demangle.h"
-
-std::string Demangled(const std::string& name);
 
 using namespace std;
 
@@ -70,7 +67,6 @@ void ObjectFile::Link()
 		ObjectFile* owner = r->Owner();
 		if(owner)
 		{
-			//std::cout << Demangled((*pos)->Name()) << std::endl;
 			on_symbol_added((*pos)->Name());
 			if (owner != this)
 			{

@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <boost/program_options.hpp>
+
 namespace po = boost::program_options;
 
 #include <iostream>
@@ -45,6 +46,23 @@ const char* version()
   "\n";
 }
 
+struct PrinterFactory
+{
+	SymbolAdded no_printing;
+	PrintSymbols print_symbols_;
+	PrintSymbolsAndDemangle print_symbols_and_demangle_;
+	SymbolAdded& get(po::variables_map& options)
+	{
+		if(!options.count("print"))
+		   return no_printing;
+
+		if(options.count("demangle"))
+			return print_symbols_and_demangle_;
+		else
+			return print_symbols_;
+	}
+};
+
 int main(int ac, char* av[])
 {
 	try
@@ -56,7 +74,9 @@ int main(int ac, char* av[])
 		po::options_description generic("Generic options");
 		generic.add_options()
 			("version,v", "print version string")
-			("help,h", "produce help message");
+			("help,h", "produce help message")
+			("print,p", "print symbols")
+			("demangle,d", "demangle symbols");
 
 		// Declare a group of options that will be 
 		// allowed both on command line and in
@@ -88,57 +108,58 @@ int main(int ac, char* av[])
 		po::positional_options_description p;
 		p.add("input-file", -1);
 
-		po::variables_map vm;
+		po::variables_map options;
 		store(po::command_line_parser(ac, av).
-			  options(cmdline_options).positional(p).run(), vm);
+			  options(cmdline_options).positional(p).run(), options);
 
 		ifstream ifs("multiple_sources.cfg");
-		store(parse_config_file(ifs, config_file_options), vm);
-		notify(vm);
+		store(parse_config_file(ifs, config_file_options), options);
+		notify(options);
 
-		if (vm.count("help")) {
+		if (options.count("help")) {
 			cout << visible << "\n";
 			return 0;
 		}
 
-		if (vm.count("version"))
+		if (options.count("version"))
 		{
 			cout << version();
 			return 0;
 		}
 
-		if (vm.count("library"))
+		if (options.count("library"))
 		{
 			cout << "Libraries are: " 
-				 << vm["library"].as< vector<string> >() << "\n";
+				 << options["library"].as< vector<string> >() << "\n";
 		}
 
-		if (vm.count("package"))
+		if (options.count("package"))
 		{
 			cout << "Packages are: " 
-				 << vm["package"].as< vector<string> >() << "\n";
+				 << options["package"].as< vector<string> >() << "\n";
 		}
 
-		if (vm.count("input-file"))
+		if (options.count("input-file"))
 		{
 			cout << "Input files are: " 
-				 << vm["input-file"].as< vector<string> >() << "\n";
+				 << options["input-file"].as< vector<string> >() << "\n";
 		}
 
 // cout << "Optimization level is " << option_level << "\n";
 
-		SymbolAdded on_symbol_added;
-		Analyser app(option_level, on_symbol_added);
-		if(vm.count("input-file"))
+		//SymbolAdded on_symbol_added;
+		PrinterFactory printer_factory_;
+		Analyser app(option_level, printer_factory_.get(options));
+		if(options.count("input-file"))
 		{
-			app.Add(vm["input-file"].as< vector<string> >());
+			app.Add(options["input-file"].as< vector<string> >());
 		}
 
-//  app.Add(vm["library"].as< vector<string> >());
+//  app.Add(options["library"].as< vector<string> >());
 
-		if(vm.count("package"))
+		if(options.count("package"))
 		{
-			app.AddPackages(vm["package"].as< vector<string> >());
+			app.AddPackages(options["package"].as< vector<string> >());
 		}
 		app.ReadObjects();
 		app.Link();
