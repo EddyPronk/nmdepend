@@ -1,5 +1,7 @@
 #PROJECT(nmdepend C++)
 
+cmake_minimum_required(VERSION 2.8)
+
 #
 # Options
 #
@@ -33,5 +35,5 @@ ENDIF(BUILD_TESTING)
 
 SUBDIRS(
   src
-# depend
+  depend
   )

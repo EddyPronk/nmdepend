@@ -49,7 +49,7 @@ Object::Object(const fs::path& p)
   assert(m_Object != s_ObjectRegistry.end());
 
   char *target = 0;
-  bfd *file = bfd_openr (p.native_file_string().c_str(), target);
+  bfd *file = bfd_openr (p.string().c_str(), target);
   if (file == NULL)
   {
     std::clog << "error opening: " << p.string() << std::endl;

@@ -69,9 +69,9 @@ void recurse_directory(const fs::path& p)
 
         while(boost::regex_search(begin, end , what, expr, flags))
         {
-	  std::string filename1(p.leaf());
+	  std::string filename1(p.string());
 	  std::string filename2(what[1].first, what[1].second);
-	  filename2 = fs::path(filename2).leaf();
+	  filename2 = fs::path(filename2).string();
 
 	  std::cout << '"' << filename1 << "\" -> \""
                            << filename2 << "\";" << std::endl;
@@ -89,7 +89,7 @@ void recurse_directory(const fs::path& p)
         std::string cluster;
         try
         {
-          cluster = fs::basename(fs::complete(p).leaf());
+          cluster = fs::basename(fs::absolute(p).filename());
         }
         catch(std::exception& e)
         {
@@ -111,7 +111,7 @@ void recurse_directory(const fs::path& p)
             || extension == ".cpp"
             )
           {
-            std::cout << '"' << it->leaf() << "\";" << std::endl;
+            std::cout << '"' << it->path().filename() << "\";" << std::endl;
           }
         }
         std::cout << '}' << std::endl;

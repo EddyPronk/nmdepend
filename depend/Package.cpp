@@ -136,7 +136,7 @@ bool Package::Depend(const Package& p) const
   std::string cluster(fs::basename(fs::path(m_Package->first).leaf()));
   if(cluster.empty())
   {
-    cluster = fs::basename(fs::complete(m_Package->first).leaf());
+    cluster = fs::basename(fs::absolute(m_Package->first).filename());
   }
 
   std::cout << "subgraph cluster_"

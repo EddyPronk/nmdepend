@@ -9,9 +9,7 @@ CHECK_INCLUDE_FILES("${INCLUDES};demangle.h" HAVE_DEMANGLE_H)
 
 FIND_PACKAGE(Binutils)
 FIND_PACKAGE(ZLIB)
-FIND_PACKAGE(Boost)
-BOOST_USE(filesystem)
-BOOST_USE(program_options)
+FIND_PACKAGE(Boost 1.48.0 COMPONENTS filesystem program_options REQUIRED)
 
 
 SET(CMAKE_CXX_FLAGS "-Wall -W -O2")
@@ -47,8 +45,7 @@ ADD_LIBRARY(core
 TARGET_LINK_LIBRARIES(core
 	${BFD_LIBRARY}
  	${IBERTY_LIBRARY}
- 	${Boost_filesystem_LIBRARY}
-    ${Boost_program_options_LIBRARY}
+ 	${Boost_LIBRARIES}
 )
 
 IF(CYGWIN)

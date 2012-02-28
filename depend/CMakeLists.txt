@@ -1,4 +1,4 @@
-FIND_PACKAGE(Boost)
+FIND_PACKAGE(Boost 1.48.0 COMPONENTS filesystem program_options regex system REQUIRED)
 FIND_PACKAGE(Binutils)
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR} ../src
@@ -17,6 +17,5 @@ TARGET_LINK_LIBRARIES(depend
        ${BFD_LIBRARY}
        ${INTL_LIBRARY}
        ${IBERTY_LIBRARY}
-       ${Boost_Filesystem_LIBRARY}
-       ${Boost_Regex_LIBRARY}
+       ${Boost_LIBRARIES}
        )
