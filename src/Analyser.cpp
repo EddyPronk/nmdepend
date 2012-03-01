@@ -60,7 +60,7 @@ void Analyser::find_file( const fs::path& dir_path)
 {
   if ( !fs::exists( dir_path ) )
   {
-    std::cout << "doesn't exist " << dir_path.native_directory_string() << std::endl;
+    std::cout << "doesn't exist " << dir_path.string() << std::endl;
   }
 
   if ( fs::is_directory( dir_path ))

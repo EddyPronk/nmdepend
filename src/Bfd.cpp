@@ -24,7 +24,7 @@ const std::string Bfd::packageName(const fs::path& path, int packageLevel)
   for(int i = 0; i < packageLevel; ++i)
       --p;
 
-  return *p;
+  return p->string();
 }
 
 Entity* Bfd::Read(const fs::path& path, int packageLevel)
@@ -37,7 +37,7 @@ Entity* Bfd::Read(const fs::path& path, int packageLevel)
 
   fs::path::iterator p = path.end();
   --p;
-  std::string name = *p;
+  std::string name = p->string();
  
   if (bfd_check_format (file, bfd_object))
   {
@@ -81,7 +81,7 @@ Entity* Bfd::ReadPackage(const fs::path& path, int /*packageLevel*/)
 
   fs::path::iterator p = path.end();
   --p;
-  std::string name = *p;
+  std::string name = p->string();
  
   if (bfd_check_format (file, bfd_object))
   {
