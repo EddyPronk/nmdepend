@@ -3,6 +3,7 @@
 // it to work.
 
 #include <string>
+#include <cstdlib>
 #define typename type_name
 #include "demangle.h"
 #undef typename

@@ -45,7 +45,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION( NewTest );
 using namespace std;
 
 
-using boost::GraphvizDigraph;
 
 
 class NewTest : public CPPUNIT_NS::TestFixture

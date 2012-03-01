@@ -17,6 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "Symbol.h"
+#include <cstdlib>
 
 // Macro to deal with const char *typename in demangle.h.
 // Don't use the keyword typename in this file and expect
