@@ -20,6 +20,7 @@
 #define ENTITY_H
 
 #include <string>
+#include <ostream>
 #include "Symbol.h"
 
 class Entity
