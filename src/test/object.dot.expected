@@ -1,11 +1,11 @@
 digraph G {
-0[label="a.o"];
-1[label="b.o"];
-2[label="c.o"];
-3[label="d.o"];
-4[label="e.o"];
-5[label="f.o"];
-6[label="main.o"];
+0[label="a.c.o"];
+1[label="b.c.o"];
+2[label="c.c.o"];
+3[label="d.c.o"];
+4[label="e.c.o"];
+5[label="f.c.o"];
+6[label="main.c.o"];
 0->1 ;
 1->5 ;
 6->0 ;

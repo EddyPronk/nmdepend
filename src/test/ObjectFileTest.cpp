@@ -154,12 +154,12 @@ protected:
 		SymbolAdded on_symbol_added;
 		ObjectFile b(g1, on_symbol_added, "b.obj", store);
 		CPPUNIT_ASSERT_EQUAL(string("b.obj"), b.Name());
-		fs::path fileName = fs::initial_path() / "project1/sub1/CMakeFiles/p1sub1.dir/b.o";
+		fs::path fileName = fs::initial_path() / "project1/sub1/CMakeFiles/p1sub1.dir/b.c.o";
 		fileName.normalize();
 		b.Read(fileName);
 
 		ObjectFile f(g1, on_symbol_added, "f.obj", store);
-		fileName = fs::initial_path() / "project1/sub2/CMakeFiles/p1sub2.dir/f.o";
+		fileName = fs::initial_path() / "project1/sub2/CMakeFiles/p1sub2.dir/f.c.o";
 		fileName.normalize();
 		CPPUNIT_ASSERT(!b.Depend(f));
 		f.Read(fileName);

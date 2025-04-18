@@ -107,6 +107,9 @@ void Analyser::find_file( const fs::path& dir_path)
 
 void Analyser::Link()
 {
+  // Sort object files by name for stable, deterministic ordering
+  std::sort(m_Factory.m_ObjectFiles.begin(), m_Factory.m_ObjectFiles.end(),
+            [](Entity* a, Entity* b) { return a->Name() < b->Name(); });
   m_ObjectGraph.init(m_Factory.m_ObjectFiles);
   m_PackageGraph.init(m_Packages);
   for (std::vector<Entity*>::iterator pos = m_Factory.m_ObjectFiles.begin();

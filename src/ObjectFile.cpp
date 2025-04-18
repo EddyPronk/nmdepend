@@ -117,10 +117,10 @@ void ObjectFile::Link()
 			assert(sym);
 
 			const char* symname = bfd_asymbol_name (sym);
-    
+
 			if (sym->flags == 0)
 			{
-				asection* section = bfd_get_section (sym);
+				asection* section = sym->section;
 
 				if (bfd_is_und_section (section))
 				{
@@ -129,12 +129,12 @@ void ObjectFile::Link()
 				else
 				{
 				    AddExportSymbol(symname);
-				} 
+				}
 			}
 
 			if (sym->flags & BSF_GLOBAL)
 			{
-			    asection* section = bfd_get_section (sym);
+				asection* section = sym->section;
 
 
 				if (bfd_is_und_section (section))
