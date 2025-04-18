@@ -5,11 +5,11 @@ INCLUDE (${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
 
 SET(INCLUDES "")
 CHECK_INCLUDE_FILES("${INCLUDES};bfd.h" HAVE_BFD_H)
-CHECK_INCLUDE_FILES("${INCLUDES};demangle.h" HAVE_DEMANGLE_H)
+CHECK_INCLUDE_FILES("${INCLUDES};libiberty/demangle.h" HAVE_DEMANGLE_H)
 
 FIND_PACKAGE(Binutils)
 FIND_PACKAGE(ZLIB)
-FIND_PACKAGE(Boost 1.48.0 COMPONENTS filesystem program_options system REQUIRED)
+FIND_PACKAGE(Boost 1.74.0 COMPONENTS filesystem program_options system REQUIRED)
 
 
 SET(CMAKE_CXX_FLAGS "-Wall -W -O2")
@@ -26,7 +26,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIR}
 #    ${CommonC++_INCLUDE_DIR}
-#	${Binutils_INCLUDE_DIR}
+	${Binutils_INCLUDE_DIR}
+	/usr/include/libiberty
 )
 
 ADD_LIBRARY(core

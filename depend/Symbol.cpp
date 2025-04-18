@@ -23,7 +23,7 @@
 // Don't use the keyword typename in this file and expect
 // it to work.
 #define typename type_name
-#include <demangle.h>
+#include <libiberty/demangle.h>
 #undef typename
 
 std::set<Symbol::Name_t> Symbol::s_SymbolRegistry;

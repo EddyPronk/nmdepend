@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdlib>
 #define typename type_name
-#include "demangle.h"
+#include <libiberty/demangle.h>
 #undef typename
 
 std::string Demangled(const std::string& name)

@@ -1,4 +1,4 @@
-FIND_PACKAGE(Boost 1.48.0 COMPONENTS filesystem program_options regex system REQUIRED)
+FIND_PACKAGE(Boost 1.74.0 COMPONENTS filesystem program_options regex system REQUIRED)
 FIND_PACKAGE(Binutils)
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR} ../src
